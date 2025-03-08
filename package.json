@@ -13,8 +13,9 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "cosmos": "cosmos",
-    "cosmos-export": "cosmos-export",
-    "build": "tsc -p tsconfig.json && vite build",
+    "cosmos-export": "cosmos-export && touch ./docs/.nojekyll",
+    "cosmos-preview": "pnpm dlx http-server ./docs",
+    "build": "tsc -p tsconfig.json && vite build --mode lib",
     "lint": "eslint ."
   },
   "dependencies": {

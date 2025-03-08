@@ -7,49 +7,62 @@ import { fileURLToPath } from "node:url";
 import { globSync } from "glob";
 import { libInjectCss } from "vite-plugin-lib-inject-css";
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), libInjectCss(), dts({
-    exclude: ["src/index.tsx", "src/**/*.fixture.tsx"],
-    tsconfigPath: 'tsconfig.app.json',
-  })],
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, 'src/main.ts'),
-      formats: ['es'],
-    },
-    rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
-      // https://rollupjs.org/configuration-options/#input
-      input: Object.fromEntries(
-          globSync(['src/components/**/*.tsx', 'src/main.ts'])
-              .filter(file => !file.includes('.fixture.'))
-              .map((file) => {
-            // This remove `src/` as well as the file extension from each
-            // file, so e.g. src/nested/foo.js becomes nested/foo
-            const entryName = path.relative(
-                'src',
-                file.slice(0, file.length - path.extname(file).length)
-            )
-            // This expands the relative paths to absolute paths, so e.g.
-            // src/nested/foo becomes /project/src/nested/foo.js
-            const entryUrl = fileURLToPath(new URL(file, import.meta.url))
-            return [entryName, entryUrl]
-          })
-      ),
-      output: {
-        entryFileNames: '[name].js',
-        assetFileNames: 'assets/[name][extname]',
-        globals: {
-          react: 'React',
-          'react-dom': 'React-dom',
-          'react/jsx-runtime': 'react/jsx-runtime',
-        },
+export default defineConfig(({ mode }) => {
+  const config = {
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
+  }
+
+  if (mode === 'lib') {
+    return {
+      ...config,
+      plugins: [react(), tailwindcss(), libInjectCss(), dts({
+        exclude: ["src/index.tsx", "src/**/*.fixture.tsx"],
+        tsconfigPath: 'tsconfig.app.json',
+      })],
+      build: {
+        lib: {
+          entry: path.resolve(__dirname, 'src/main.ts'),
+          formats: ['es'],
+        },
+        rollupOptions: {
+          external: ['react', 'react-dom', 'react/jsx-runtime'],
+          // https://rollupjs.org/configuration-options/#input
+          input: Object.fromEntries(
+            globSync(['src/components/**/*.tsx', 'src/main.ts'])
+              .filter(file => !file.includes('.fixture.'))
+              .map((file) => {
+                // This remove `src/` as well as the file extension from each
+                // file, so e.g. src/nested/foo.js becomes nested/foo
+                const entryName = path.relative(
+                  'src',
+                  file.slice(0, file.length - path.extname(file).length)
+                )
+                // This expands the relative paths to absolute paths, so e.g.
+                // src/nested/foo becomes /project/src/nested/foo.js
+                const entryUrl = fileURLToPath(new URL(file, import.meta.url))
+                return [entryName, entryUrl]
+              })
+          ),
+          output: {
+            entryFileNames: '[name].js',
+            assetFileNames: 'assets/[name][extname]',
+            globals: {
+              react: 'React',
+              'react-dom': 'React-dom',
+              'react/jsx-runtime': 'react/jsx-runtime',
+            },
+          },
+        },
+      }
+    }
+  }
+
+  return {
+    ...config,
+    plugins: [react(), tailwindcss()]
+  }
 })
