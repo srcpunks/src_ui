@@ -4,6 +4,9 @@
 
 :root {
   --background: oklch(20.46% 0 0);
+  --background-gradient-1: #481d50;
+  --background-gradient-2: #2d302b;
+  --background-gradient-3: #173649;
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(20.46% 0 0);
   --card-foreground: oklch(0.984 0.003 247.858);
@@ -91,9 +94,9 @@
 
     &::before {
       @apply absolute size-full top-0 left-0 opacity-50 content-[''] z-[-1];
-      background: radial-gradient(ellipse at center right, #481d50, transparent),
-      radial-gradient(ellipse at top right, #2d302b, transparent),
-      radial-gradient(ellipse at bottom left, #173649, transparent);
+      background: radial-gradient(ellipse at center right, var(--background-gradient-1), transparent),
+      radial-gradient(ellipse at top right, var(--background-gradient-2), transparent),
+      radial-gradient(ellipse at bottom left, var(--background-gradient-3), transparent);
     }
   }
 }
