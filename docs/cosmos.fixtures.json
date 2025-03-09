@@ -2,26 +2,20 @@
   "rendererUrl": "renderer.html",
   "fixtures": [
     {
-      "filePath": "src/components/ui/button/button.fixture.tsx",
+      "filePath": "src/__fixtures__/button.fixture.tsx",
       "cleanPath": [
         "src",
-        "components",
-        "ui",
-        "button",
         "button"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2Fcomponents%2Fui%2Fbutton%2Fbutton.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fbutton.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/components/ui/tabs/tabs.fixture.tsx",
+      "filePath": "src/__fixtures__/tabs.fixture.tsx",
       "cleanPath": [
         "src",
-        "components",
-        "ui",
-        "tabs",
         "tabs"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2Fcomponents%2Fui%2Ftabs%2Ftabs.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Ftabs.fixture.tsx%22%7D&locked=true"
     }
   ]
 }

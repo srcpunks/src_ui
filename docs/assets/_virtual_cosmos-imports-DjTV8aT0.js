@@ -1,4 +1,4 @@
-import { r as reactExports, R as React, a as React$1, b as requireReactDom } from "./index-CzgYCwZW.js";
+import { r as reactExports, R as React, a as React$1, b as requireReactDom } from "./index-CHrNpUAL.js";
 var jsxRuntime = { exports: {} };
 var reactJsxRuntime_production = {};
 /**
@@ -3763,8 +3763,8 @@ const rendererConfig = {
   "containerQuerySelector": null
 };
 const fixtures = {
-  "src/components/ui/tabs/tabs.fixture.tsx": { module: fixture0 },
-  "src/components/ui/button/button.fixture.tsx": { module: fixture1 }
+  "src/__fixtures__/tabs.fixture.tsx": { module: fixture0 },
+  "src/__fixtures__/button.fixture.tsx": { module: fixture1 }
 };
 const decorators = {};
 const moduleWrappers = {

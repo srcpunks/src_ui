@@ -1,4 +1,4 @@
-import { Tabs, TabsTrigger, TabsList, TabsContent } from "./index.tsx";
+import { Tabs, TabsTrigger, TabsList, TabsContent } from "../components/ui/tabs";
 
 export default function TabsFixture() {
     return (<div className="size-full flex justify-center pt-10">
