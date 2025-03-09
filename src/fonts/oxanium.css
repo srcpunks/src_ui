@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+@font-face {
+  font-family: 'Oxanium';
+  src: url('@/assets/fonts/Oxanium-VariableFont_wght.ttf') format("truetype-variations");
+  font-weight: 200 800;
+}
 
 @utility oxanium-extralight {
   font-family: "Oxanium", sans-serif;

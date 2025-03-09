@@ -1,6 +1,10 @@
-@import "https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap";
-
 /*! tailwindcss v4.0.9 | MIT License | https://tailwindcss.com */
+@font-face {
+  font-family: Oxanium;
+  src: url("./Oxanium-VariableFont_wght-zH6NCYuF.ttf") format("truetype-variations");
+  font-weight: 200 800;
+}
+
 @layer theme {
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -20,6 +24,7 @@
     --default-mono-font-variation-settings: var(--font-mono--font-variation-settings);
   }
 }
+
 @layer base {
   *, :after, :before, ::backdrop {
     box-sizing: border-box;
@@ -288,7 +293,9 @@
     position: absolute;
   }
 }
+
 @layer components;
+
 @layer utilities {
   .absolute {
     position: absolute;
@@ -620,6 +627,7 @@
     height: calc(var(--spacing) * 4);
   }
 }
+
 :root {
   --background: oklch(20.46% 0 0);
   --background-gradient-1: #481d50;
@@ -658,127 +666,155 @@
   --sidebar-ring: oklch(.704 .04 256.788);
   --radius: .625rem;
 }
+
 @keyframes enter {
   from {
     opacity: var(--tw-enter-opacity, 1);
     transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
   }
 }
+
 @keyframes exit {
   to {
     opacity: var(--tw-exit-opacity, 1);
     transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1)) rotate(var(--tw-exit-rotate, 0));
   }
 }
+
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;
 }
+
 @property --tw-font-weight {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-shadow {
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
+
 @property --tw-shadow-color {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-inset-shadow {
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
+
 @property --tw-inset-shadow-color {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-ring-color {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-ring-shadow {
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
+
 @property --tw-inset-ring-color {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-inset-ring-shadow {
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
+
 @property --tw-ring-inset {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-ring-offset-width {
   syntax: "<length>";
   inherits: false;
   initial-value: 0;
 }
+
 @property --tw-ring-offset-color {
   syntax: "*";
   inherits: false;
   initial-value: #fff;
 }
+
 @property --tw-ring-offset-shadow {
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
 }
+
 @property --tw-outline-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;
 }
+
 @property --tw-blur {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-brightness {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-contrast {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-grayscale {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-hue-rotate {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-invert {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-opacity {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-saturate {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-sepia {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-drop-shadow {
   syntax: "*";
   inherits: false
 }
+
 @property --tw-content {
   syntax: "*";
   inherits: false;
