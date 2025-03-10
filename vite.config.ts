@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
     return {
       ...config,
       plugins: [react(), tailwindcss(), libInjectCss(), dts({
-        exclude: ["src/index.tsx", "src/**/*.fixture.tsx"],
+        exclude: ["src/index.tsx", "src/__fixtures__/**/*"],
         tsconfigPath: 'tsconfig.app.json',
       })],
       build: {
@@ -33,7 +33,6 @@ export default defineConfig(({ mode }) => {
           // https://rollupjs.org/configuration-options/#input
           input: Object.fromEntries(
             globSync(['src/components/**/*.tsx', 'src/main.ts'])
-              .filter(file => !file.includes('.fixture.'))
               .map((file) => {
                 // This remove `src/` as well as the file extension from each
                 // file, so e.g. src/nested/foo.js becomes nested/foo
