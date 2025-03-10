@@ -1,6 +1,6 @@
 {
-  "name": "src_ui",
-  "description": "src_ui is a UI component library",
+  "name": "@srcpunks/src_ui",
+  "description": "@srcpunks/src_ui is a UI component library",
   "private": false,
   "version": "0.0.1",
   "type": "module",
