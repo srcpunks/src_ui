@@ -2,108 +2,108 @@
   "rendererUrl": "renderer.html",
   "fixtures": [
     {
-      "filePath": "src/__fixtures__/button.fixture.tsx",
+      "filePath": "src/__fixtures__/Button.fixture.tsx",
       "cleanPath": [
         "src",
-        "button"
+        "Button"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fbutton.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FButton.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/card.fixture.tsx",
+      "filePath": "src/__fixtures__/Card.fixture.tsx",
       "cleanPath": [
         "src",
-        "card"
+        "Card"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fcard.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FCard.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/checkbox.fixture.tsx",
+      "filePath": "src/__fixtures__/Checkbox.fixture.tsx",
       "cleanPath": [
         "src",
-        "checkbox"
+        "Checkbox"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fcheckbox.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FCheckbox.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/input.fixture.tsx",
+      "filePath": "src/__fixtures__/Input.fixture.tsx",
       "cleanPath": [
         "src",
-        "input"
+        "Input"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Finput.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FInput.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/label.fixture.tsx",
+      "filePath": "src/__fixtures__/Label.fixture.tsx",
       "cleanPath": [
         "src",
-        "label"
+        "Label"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Flabel.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FLabel.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/select.fixture.tsx",
+      "filePath": "src/__fixtures__/Select.fixture.tsx",
       "cleanPath": [
         "src",
-        "select"
+        "Select"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fselect.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FSelect.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/separator.fixture.tsx",
+      "filePath": "src/__fixtures__/Separator.fixture.tsx",
       "cleanPath": [
         "src",
-        "separator"
+        "Separator"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fseparator.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FSeparator.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/sheet.fixture.tsx",
+      "filePath": "src/__fixtures__/Sheet.fixture.tsx",
       "cleanPath": [
         "src",
-        "sheet"
+        "Sheet"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fsheet.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FSheet.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/sidebar.fixture.tsx",
+      "filePath": "src/__fixtures__/Sidebar.fixture.tsx",
       "cleanPath": [
         "src",
-        "sidebar"
+        "Sidebar"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fsidebar.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FSidebar.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/skeleton.fixture.tsx",
+      "filePath": "src/__fixtures__/Skeleton.fixture.tsx",
       "cleanPath": [
         "src",
-        "skeleton"
+        "Skeleton"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Fskeleton.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FSkeleton.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/tabs.fixture.tsx",
+      "filePath": "src/__fixtures__/Tabs.fixture.tsx",
       "cleanPath": [
         "src",
-        "tabs"
+        "Tabs"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Ftabs.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FTabs.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/textarea.fixture.tsx",
+      "filePath": "src/__fixtures__/Textarea.fixture.tsx",
       "cleanPath": [
         "src",
-        "textarea"
+        "Textarea"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Ftextarea.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FTextarea.fixture.tsx%22%7D&locked=true"
     },
     {
-      "filePath": "src/__fixtures__/tooltip.fixture.tsx",
+      "filePath": "src/__fixtures__/Tooltip.fixture.tsx",
       "cleanPath": [
         "src",
-        "tooltip"
+        "Tooltip"
       ],
-      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2Ftooltip.fixture.tsx%22%7D&locked=true"
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FTooltip.fixture.tsx%22%7D&locked=true"
     }
   ]
 }

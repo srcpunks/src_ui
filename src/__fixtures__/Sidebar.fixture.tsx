@@ -36,7 +36,7 @@ export default function SidebarFixture() {
     )
 
     return (
-        <SidebarProvider>
+        <SidebarProvider className="no-padding">
             <AppSidebar />
             <main>
                 <SidebarTrigger />

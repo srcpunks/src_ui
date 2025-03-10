@@ -1,4 +1,4 @@
-import { r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, R as React, b as React$1 } from "./index-Bx-lRXnA.js";
+import { r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, R as React, b as React$1 } from "./index-6zFGj8y-.js";
 var jsxRuntime = { exports: {} };
 var reactJsxRuntime_production = {};
 /**
@@ -8792,7 +8792,7 @@ function SidebarFixture() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item.title })
     ] }) }) }, item.title)) }) })
   ] }) }) });
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(SidebarProvider, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(SidebarProvider, { className: "no-padding", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(AppSidebar, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(SidebarTrigger, {}),
@@ -10520,19 +10520,19 @@ const rendererConfig = {
   "containerQuerySelector": null
 };
 const fixtures = {
-  "src/__fixtures__/tooltip.fixture.tsx": { module: fixture0 },
-  "src/__fixtures__/textarea.fixture.tsx": { module: fixture1 },
-  "src/__fixtures__/tabs.fixture.tsx": { module: fixture2 },
-  "src/__fixtures__/skeleton.fixture.tsx": { module: fixture3 },
-  "src/__fixtures__/sidebar.fixture.tsx": { module: fixture4 },
-  "src/__fixtures__/sheet.fixture.tsx": { module: fixture5 },
-  "src/__fixtures__/separator.fixture.tsx": { module: fixture6 },
-  "src/__fixtures__/select.fixture.tsx": { module: fixture7 },
-  "src/__fixtures__/label.fixture.tsx": { module: fixture8 },
-  "src/__fixtures__/input.fixture.tsx": { module: fixture9 },
-  "src/__fixtures__/checkbox.fixture.tsx": { module: fixture10 },
-  "src/__fixtures__/card.fixture.tsx": { module: fixture11 },
-  "src/__fixtures__/button.fixture.tsx": { module: fixture12 }
+  "src/__fixtures__/Tooltip.fixture.tsx": { module: fixture0 },
+  "src/__fixtures__/Textarea.fixture.tsx": { module: fixture1 },
+  "src/__fixtures__/Tabs.fixture.tsx": { module: fixture2 },
+  "src/__fixtures__/Skeleton.fixture.tsx": { module: fixture3 },
+  "src/__fixtures__/Sidebar.fixture.tsx": { module: fixture4 },
+  "src/__fixtures__/Sheet.fixture.tsx": { module: fixture5 },
+  "src/__fixtures__/Separator.fixture.tsx": { module: fixture6 },
+  "src/__fixtures__/Select.fixture.tsx": { module: fixture7 },
+  "src/__fixtures__/Label.fixture.tsx": { module: fixture8 },
+  "src/__fixtures__/Input.fixture.tsx": { module: fixture9 },
+  "src/__fixtures__/Checkbox.fixture.tsx": { module: fixture10 },
+  "src/__fixtures__/Card.fixture.tsx": { module: fixture11 },
+  "src/__fixtures__/Button.fixture.tsx": { module: fixture12 }
 };
 const decorators = {};
 const moduleWrappers = {
