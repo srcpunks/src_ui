@@ -1,53 +1,54 @@
 @font-face {
   font-family: 'Oxanium';
-  src: url('@/assets/fonts/Oxanium-VariableFont_wght.ttf') format("truetype-variations");
+  src: url('@/assets/fonts/Oxanium-VariableFont_wght.ttf')
+    format('truetype-variations');
   font-weight: 200 800;
 }
 
 @utility oxanium-extralight {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 200;
   font-style: normal;
 }
 
 @utility oxanium-light {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
 }
 
 @utility oxanium-regular {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
 }
 
 @utility oxanium-medium {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
 }
 
 @utility oxanium-semibold {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
 }
 
 @utility oxanium-bold {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
 }
 
 @utility oxanium-extrabold {
-  font-family: "Oxanium", sans-serif;
+  font-family: 'Oxanium', sans-serif;
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;

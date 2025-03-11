@@ -1,5 +1,5 @@
-@import "./fonts/fonts.css";
-@import "tailwindcss";
+@import './fonts/fonts.css';
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
 
@@ -86,20 +86,32 @@
     @apply border-border outline-ring/50;
   }
 
-  html, body {
+  html,
+  body {
     @apply size-full;
   }
 
   body {
-    @apply bg-background text-foreground relative oxanium-regular;
+    @apply bg-background text-foreground oxanium-regular relative;
 
     &::before {
-      @apply absolute size-full top-0 left-0 opacity-50 content-[''] z-[-1];
-      background: radial-gradient(ellipse at center right, var(--background-gradient-1), transparent),
-      radial-gradient(ellipse at top right, var(--background-gradient-2), transparent),
-      radial-gradient(ellipse at bottom left, var(--background-gradient-3), transparent);
+      @apply absolute top-0 left-0 z-[-1] size-full opacity-50 content-[''];
+      background:
+        radial-gradient(
+          ellipse at center right,
+          var(--background-gradient-1),
+          transparent
+        ),
+        radial-gradient(
+          ellipse at top right,
+          var(--background-gradient-2),
+          transparent
+        ),
+        radial-gradient(
+          ellipse at bottom left,
+          var(--background-gradient-3),
+          transparent
+        );
     }
   }
 }
-
-
