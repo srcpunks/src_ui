@@ -1,0 +1,39 @@
+.card-footer-primary, .card-footer-secondary {
+  @apply relative h-full flex items-center justify-center px-4 py-2.5;
+
+  &::before, &::after {
+    @apply absolute bg-transparent;
+    content: "";
+    top: -1px;
+  }
+
+  &.flex-auto > * {
+    width: 100%;
+  }
+
+  &.card-footer-primary::before {
+    @apply z-[-1];
+    left: 0;
+    height: 4rem;
+    width: 4rem;
+    border-top-left-radius: 2rem;
+    box-shadow: 0 -2rem 0 0 var(--border);
+  }
+
+  &.card-footer-secondary {
+    @apply bg-card border border-t-0 rounded-br-4xl rounded-bl-4xl;
+
+    &::before {
+      @apply z-[0];
+      right: -4rem;
+      height: 4rem;
+      width: 4rem;
+      border-top-left-radius: 2rem;
+      box-shadow: 0 -2rem 0 0 var(--card);
+    }
+
+    &::after {
+      @apply border-t border-card w-full;
+    }
+  }
+}
