@@ -25,7 +25,7 @@ export default function CardFixture() {
         <CardDescription>Deploy your new project in one-click.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form className="relative z-10">
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Name</Label>
@@ -48,9 +48,14 @@ export default function CardFixture() {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+      <CardFooter className="card-footer flex justify-between">
+        <div className="card-footer-left flex items-center justify-center rounded-br-4xl rounded-bl-4xl p-4">
+          <Button variant="outline">Cancel</Button>
+        </div>
+
+        <div className="card-footer-right flex-auto px-4 py-4">
+          <Button className="w-full">Deploy</Button>
+        </div>
       </CardFooter>
     </Card>
   )
