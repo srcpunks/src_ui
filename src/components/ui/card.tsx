@@ -58,13 +58,46 @@ function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
   )
 }
 
-function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
+interface CardFooterProps extends React.ComponentProps<'div'> {
+  leftSlot?: React.ReactNode
+  rightSlot: React.ReactNode
+  fitRight?: boolean
+}
+
+function CardFooter({
+  className,
+  leftSlot,
+  rightSlot,
+  fitRight,
+  ...props
+}: CardFooterProps) {
   return (
     <div
       data-slot="card-footer"
-      className={cn('flex items-center pr-6 pb-6', className)}
+      className={cn(
+        'relative flex items-center justify-between pb-6',
+        className,
+      )}
       {...props}
-    />
+    >
+      <div
+        className={cn(
+          'card-footer-left flex items-center justify-center rounded-br-4xl rounded-bl-4xl px-4 py-2.5',
+          fitRight && 'flex-auto',
+        )}
+      >
+        {leftSlot}
+      </div>
+
+      <div
+        className={cn(
+          'card-footer-right px-4 py-2.5',
+          !fitRight && 'flex-auto',
+        )}
+      >
+        {rightSlot}
+      </div>
+    </div>
   )
 }
 

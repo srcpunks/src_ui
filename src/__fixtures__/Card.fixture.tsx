@@ -48,15 +48,10 @@ export default function CardFixture() {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="card-footer flex justify-between">
-        <div className="card-footer-left flex items-center justify-center rounded-br-4xl rounded-bl-4xl p-4">
-          <Button variant="outline">Cancel</Button>
-        </div>
-
-        <div className="card-footer-right flex-auto px-4 py-4">
-          <Button className="w-full">Deploy</Button>
-        </div>
-      </CardFooter>
+      <CardFooter
+        leftSlot={<Button variant="outline">Cancel</Button>}
+        rightSlot={<Button className="w-full">Deploy</Button>}
+      />
     </Card>
   )
 }
