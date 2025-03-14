@@ -34,7 +34,7 @@ export function Card({
       <div
         data-slot="card-content"
         className={cn(
-          'bg-card border-x px-6 pt-3 pb-2',
+          'bg-card border-x px-6 py-2',
           primaryAction && 'rounded-br-4xl border-b',
         )}
       >
@@ -55,18 +55,18 @@ function CardHeader({ title, description, className }: CardHeaderProps) {
     <div
       data-slot="card-header"
       className={cn(
-        'bg-card flex min-h-6 flex-col gap-1.5 rounded-t-4xl border border-b-0',
+        'flex min-h-6 flex-col gap-1.5',
         className,
       )}
     >
       {(title ?? description) && (
-        <div className="p-6 pb-3">
-          <div data-slot="card-title" className="leading-none font-semibold">
+        <div className="pt-6">
+          <div data-slot="card-title" className="leading-none text-lg font-semibold pl-6 pb-1">
             {title}
           </div>
           <div
             data-slot="card-description"
-            className="text-muted-foreground text-sm"
+            className="bg-card text-muted-foreground text-sm border-x border-t rounded-t-4xl px-6 pb-4 pt-3"
           >
             {description}
           </div>

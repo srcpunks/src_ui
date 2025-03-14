@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button.tsx'
 import { useFixtureSelect } from 'react-cosmos/client';
 
 export default function CardFixture() {
-  const [layout] = useFixtureSelect('layout', {
+  const [footerLayout] = useFixtureSelect('footer layout', {
     options: ['two-button footer', 'one-button footer'],
   });
 
@@ -30,8 +30,8 @@ export default function CardFixture() {
       title="Create project"
       description="Deploy your new project in one-click."
       className="min-w-[350px] w-fit"
-      {...(layout === 'two-button footer' && twoButtonFooter)}
-      {...(layout === 'one-button footer' && oneButtonFooter)}
+      {...(footerLayout === 'two-button footer' && twoButtonFooter)}
+      {...(footerLayout === 'one-button footer' && oneButtonFooter)}
     >
       <form className="relative z-10">
         <div className="grid w-full items-center gap-4">
