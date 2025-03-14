@@ -9,15 +9,29 @@ import {
   SelectValue,
 } from '@/components/ui/select.tsx'
 import { Button } from '@/components/ui/button.tsx'
+import { useFixtureSelect } from 'react-cosmos/client';
 
 export default function CardFixture() {
+  const [layout] = useFixtureSelect('layout', {
+    options: ['two-button footer', 'one-button footer'],
+  });
+
+  const twoButtonFooter = {
+    primaryAction: <Button>Deploy</Button>,
+    secondaryAction: <Button variant="outline">Cancel</Button>
+  }
+
+  const oneButtonFooter = {
+    primaryAction: <Button>Deploy</Button>,
+  }
+
   return (
     <Card
       title="Create project"
       description="Deploy your new project in one-click."
-      primaryAction={<Button>Deploy</Button>}
-      secondaryAction={<Button variant="outline">Cancel</Button>}
-      className="w-[350px]"
+      className="min-w-[350px] w-fit"
+      {...(layout === 'two-button footer' && twoButtonFooter)}
+      {...(layout === 'one-button footer' && oneButtonFooter)}
     >
       <form className="relative z-10">
         <div className="grid w-full items-center gap-4">
