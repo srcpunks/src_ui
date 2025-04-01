@@ -1,0 +1,44 @@
+.card-footer-primary, .card-footer-secondary {
+  @apply relative h-14 flex items-center justify-center px-6 py-2.5;
+
+  &::before, &::after {
+    @apply absolute;
+    content: "";
+    top: -1px;
+  }
+
+  & > * {
+    @apply size-full overflow-hidden;
+  }
+
+  &.card-footer-primary::before {
+    @apply z-[-1];
+    left: 0;
+    top: 0;
+    height: 4rem;
+    width: 4rem;
+    border-top-left-radius: 2rem;
+    box-shadow: 0 -2rem 0 0 var(--border);
+  }
+
+  &.card-footer-secondary {
+    @apply bg-card border border-t-0 rounded-br-4xl rounded-bl-4xl basis-1/4;
+
+    &::before, &::after {
+      top: -1px;
+    }
+
+    &::before {
+      @apply z-[0];
+      right: -4rem;
+      height: 4rem;
+      width: 4rem;
+      border-top-left-radius: 2rem;
+      box-shadow: 0 -2rem 0 0 var(--card);
+    }
+
+    &::after {
+      @apply border-t border-card w-full;
+    }
+  }
+}
