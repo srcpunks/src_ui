@@ -54,24 +54,30 @@ function CardHeader({ title, description, className }: CardHeaderProps) {
   return (
     <div
       data-slot="card-header"
-      className={cn(
-        'flex min-h-6 flex-col gap-1.5',
-        className,
-      )}
+      className={cn('flex min-h-6 flex-col gap-1.5', className)}
     >
       {(title ?? description) && (
         <div className="pt-6">
-          <div data-slot="card-title" className="leading-none text-lg font-semibold pl-6 pb-1">
-            {title}
-          </div>
+          <CardTitle title={title} />
           <div
             data-slot="card-description"
-            className="bg-card text-muted-foreground text-sm border-x border-t rounded-t-4xl px-6 pb-4 pt-3"
+            className="bg-card text-muted-foreground rounded-t-4xl border-x border-t px-6 pt-3 pb-4 text-sm"
           >
             {description}
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+function CardTitle({ title, className }: CardHeaderProps) {
+  return (
+    <div
+      data-slot="card-title"
+      className={cn('pb-1 pl-6 text-lg leading-none font-semibold', className)}
+    >
+      {title}
     </div>
   )
 }
