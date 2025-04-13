@@ -1,5 +1,5 @@
 .card-titlebar {
-  @apply relative flex items-center justify-between;
+  @apply relative flex items-center;
 
   .card-titlebar-title,
   .card-titlebar-secondary {
@@ -16,31 +16,35 @@
       @apply size-full overflow-hidden;
     }
 
-    &.card-titlebar-title::before {
+    &.card-titlebar-secondary::before {
       @apply z-[-1];
-      right: 0;
+      left: 0;
       bottom: 0;
       height: 4rem;
       width: 4rem;
-      border-bottom-right-radius: 2rem;
+      border-bottom-left-radius: 2rem;
       box-shadow: 0 2rem var(--border);
     }
 
-    &.card-titlebar-secondary {
-      @apply bg-card basis-1/4 rounded-tl-4xl rounded-tr-4xl border border-b-0;
+    &.card-titlebar-title {
+      @apply bg-card flex-auto shrink-0 rounded-t-4xl border border-b-0;
 
       &::before {
         @apply z-[0];
-        left: -4rem;
+        right: -4rem;
         height: 4rem;
         width: 4rem;
-        border-bottom-right-radius: 2rem;
+        border-bottom-left-radius: 2rem;
         box-shadow: 0 2rem var(--card);
       }
 
       &::after {
         @apply border-card w-full border-t;
       }
+    }
+
+    &.card-titlebar-secondary {
+      @apply min-w-25 basis-2/4;
     }
   }
 
@@ -78,7 +82,7 @@
     }
 
     &.card-footer-secondary {
-      @apply bg-card basis-1/4 rounded-br-4xl rounded-bl-4xl border border-t-0;
+      @apply bg-card basis-1/4 rounded-b-4xl border border-t-0;
 
       &::before {
         @apply z-[0];

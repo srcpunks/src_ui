@@ -67,8 +67,8 @@ function CardHeader({ title, description, className }: CardHeaderProps) {
           <div
             data-slot="card-description"
             className={cn(
-              'bg-card text-muted-foreground rounded-tl-4xl border-x border-t px-6 pt-7 pb-4 text-sm',
-              !title && 'rounded-tr-4xl',
+              'bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pt-7 pb-4 text-sm',
+              !title && 'rounded-tl-4xl',
             )}
           >
             {description}
