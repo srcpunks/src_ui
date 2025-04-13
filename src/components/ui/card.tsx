@@ -7,6 +7,11 @@ interface CardHeaderProps {
   className?: string
 }
 
+interface CartTitleProps {
+  title: ReactNode
+  className?: string
+}
+
 interface CardFooterProps {
   primaryAction?: ReactNode
   secondaryAction?: ReactNode
@@ -54,30 +59,31 @@ function CardHeader({ title, description, className }: CardHeaderProps) {
   return (
     <div
       data-slot="card-header"
-      className={cn('flex min-h-6 flex-col gap-1.5', className)}
+      className={cn('flex min-h-6 flex-col', className)}
     >
       {(title ?? description) && (
-        <div className="pt-6">
-          <CardTitle title={title} />
+        <>
+          {title && <CardTitlebar title={title} />}
           <div
             data-slot="card-description"
-            className="bg-card text-muted-foreground rounded-t-4xl border-x border-t px-6 pt-3 pb-4 text-sm"
+            className={cn(
+              'bg-card text-muted-foreground rounded-tl-4xl border-x border-t px-6 pt-7 pb-4 text-sm',
+              !title && 'rounded-tr-4xl',
+            )}
           >
             {description}
           </div>
-        </div>
+        </>
       )}
     </div>
   )
 }
 
-function CardTitle({ title, className }: CardHeaderProps) {
+function CardTitlebar({ title, className }: CartTitleProps) {
   return (
-    <div
-      data-slot="card-title"
-      className={cn('pb-1 pl-6 text-lg leading-none font-semibold', className)}
-    >
-      {title}
+    <div data-slot="card-titlebar" className={cn('card-titlebar', className)}>
+      <div className={cn('card-titlebar-title flex-auto')}>{title}</div>
+      <div className={cn('card-titlebar-secondary')}></div>
     </div>
   )
 }
@@ -92,7 +98,7 @@ function CardFooter({
     <div
       data-slot="card-footer"
       className={cn(
-        'relative flex items-center justify-between pb-6',
+        'card-footer',
         !primaryAction && 'bg-card rounded-b-4xl border border-t-0',
         className,
       )}

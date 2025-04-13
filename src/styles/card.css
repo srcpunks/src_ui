@@ -1,44 +1,97 @@
-.card-footer-primary, .card-footer-secondary {
-  @apply relative h-14 flex items-center justify-center px-6 py-2.5;
+.card-titlebar {
+  @apply relative flex items-center justify-between;
 
-  &::before, &::after {
-    @apply absolute;
-    content: "";
-    top: -1px;
+  .card-titlebar-title,
+  .card-titlebar-secondary {
+    @apply relative flex h-14 items-center justify-center px-6 py-2.5;
+
+    &::before,
+    &::after {
+      @apply absolute;
+      content: '';
+      bottom: -1px;
+    }
+
+    & > * {
+      @apply size-full overflow-hidden;
+    }
+
+    &.card-titlebar-title::before {
+      @apply z-[-1];
+      right: 0;
+      bottom: 0;
+      height: 4rem;
+      width: 4rem;
+      border-bottom-right-radius: 2rem;
+      box-shadow: 0 2rem var(--border);
+    }
+
+    &.card-titlebar-secondary {
+      @apply bg-card basis-1/4 rounded-tl-4xl rounded-tr-4xl border border-b-0;
+
+      &::before {
+        @apply z-[0];
+        left: -4rem;
+        height: 4rem;
+        width: 4rem;
+        border-bottom-right-radius: 2rem;
+        box-shadow: 0 2rem var(--card);
+      }
+
+      &::after {
+        @apply border-card w-full border-t;
+      }
+    }
   }
 
-  & > * {
-    @apply size-full overflow-hidden;
+  .card-titlebar-title {
+    @apply text-lg leading-none font-semibold;
   }
+}
 
-  &.card-footer-primary::before {
-    @apply z-[-1];
-    left: 0;
-    top: 0;
-    height: 4rem;
-    width: 4rem;
-    border-top-left-radius: 2rem;
-    box-shadow: 0 -2rem 0 0 var(--border);
-  }
+.card-footer {
+  @apply relative flex items-center justify-between;
 
-  &.card-footer-secondary {
-    @apply bg-card border border-t-0 rounded-br-4xl rounded-bl-4xl basis-1/4;
+  .card-footer-primary,
+  .card-footer-secondary {
+    @apply relative flex h-14 items-center justify-center px-6 py-2.5;
 
-    &::before, &::after {
+    &::before,
+    &::after {
+      @apply absolute;
+      content: '';
       top: -1px;
     }
 
-    &::before {
-      @apply z-[0];
-      right: -4rem;
+    & > * {
+      @apply size-full overflow-hidden;
+    }
+
+    &.card-footer-primary::before {
+      @apply z-[-1];
+      left: 0;
+      top: 0;
       height: 4rem;
       width: 4rem;
       border-top-left-radius: 2rem;
-      box-shadow: 0 -2rem 0 0 var(--card);
+      box-shadow: 0 -2rem var(--border);
     }
 
-    &::after {
-      @apply border-t border-card w-full;
+    &.card-footer-secondary {
+      @apply bg-card basis-1/4 rounded-br-4xl rounded-bl-4xl border border-t-0;
+
+      &::before {
+        @apply z-[0];
+        right: -4rem;
+        height: 4rem;
+        width: 4rem;
+        border-top-left-radius: 2rem;
+        box-shadow: 0 -2rem var(--card);
+      }
+
+      &::after {
+        @apply border-card w-full border-t;
+      }
     }
   }
 }
