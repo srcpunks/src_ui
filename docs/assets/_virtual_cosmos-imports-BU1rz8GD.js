@@ -1,4 +1,131 @@
-import { r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, R as React, b as React$1 } from "./index-CDccHpfs.js";
+import { u as useFixtureState, e as extendWithValue, R as React, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React$1 } from "./index-CNo4l2x9.js";
+function useCurrentInputValue(inputName, defaultValue) {
+  const [fixtureState] = useFixtureState("inputs");
+  const inputFs = fixtureState && fixtureState[inputName];
+  return inputFs && inputFs.type === "standard" ? (
+    // Types of fixture state values cannot be guaranteed at run time, which
+    // means that tampering with the fixture state can cause runtime errors
+    extendWithValue(defaultValue, inputFs.currentValue)
+  ) : defaultValue;
+}
+function useInputFixtureState(inputName, defaultValue) {
+  const [, setFixtureState] = useFixtureState("inputs");
+  React.useEffect(() => {
+    setFixtureState((prevFs) => {
+      const inputFs = prevFs && prevFs[inputName];
+      if (inputFs && inputFs.type === "standard" && fsValueExtendsBaseValue(inputFs.defaultValue, defaultValue))
+        return prevFs;
+      return {
+        ...prevFs,
+        [inputName]: {
+          type: "standard",
+          defaultValue: createValue(defaultValue),
+          currentValue: createValue(defaultValue)
+        }
+      };
+    });
+  }, [setFixtureState, inputName, defaultValue]);
+}
+function fsValueExtendsBaseValue(fsValue, baseValue) {
+  return isEqual(baseValue, extendWithValue(baseValue, fsValue));
+}
+function useSetInputValue(inputName, defaultValue) {
+  const [, setFixtureState] = useFixtureState("inputs");
+  return React.useCallback((stateChange) => {
+    setFixtureState((prevFs) => {
+      function getNewState() {
+        if (typeof stateChange !== "function")
+          return stateChange;
+        const stateUpdater = stateChange;
+        return stateUpdater(getCurrentValueFromFixtureState(prevFs, inputName, defaultValue));
+      }
+      return {
+        ...prevFs,
+        [inputName]: {
+          type: "standard",
+          defaultValue: createValue(defaultValue),
+          currentValue: createValue(getNewState())
+        }
+      };
+    });
+  }, [setFixtureState, defaultValue, inputName]);
+}
+function getCurrentValueFromFixtureState(fixtureState, inputName, defaultValue) {
+  const inputFs = fixtureState && fixtureState[inputName];
+  return inputFs && inputFs.type === "standard" ? extendWithValue(defaultValue, inputFs.currentValue) : defaultValue;
+}
+function useFixtureInput(inputName, defaultValue) {
+  useInputFixtureState(inputName, defaultValue);
+  const currentValue = useCurrentInputValue(inputName, defaultValue);
+  const setValue = useSetInputValue(inputName, defaultValue);
+  return [currentValue, setValue];
+}
+function getDefaultSelectValue({ options, defaultValue }) {
+  if (typeof defaultValue === "string") {
+    return defaultValue;
+  }
+  const [firstOption] = options;
+  if (typeof firstOption === "object") {
+    return firstOption.options[0];
+  }
+  return firstOption;
+}
+function useCurrentSelectValue(selectName, args) {
+  const [fixtureState] = useFixtureState("inputs");
+  const inputFs = fixtureState && fixtureState[selectName];
+  return inputFs && inputFs.type === "select" ? inputFs.currentValue : getDefaultSelectValue(args);
+}
+function useSelectFixtureState(selectName, args) {
+  const [, setFixtureState] = useFixtureState("inputs");
+  const defaultValue = getDefaultSelectValue(args);
+  reactExports.useEffect(() => {
+    setFixtureState((prevFs) => {
+      const inputFs = prevFs && prevFs[selectName];
+      if (inputFs && inputFs.type === "select" && inputFs.defaultValue === defaultValue)
+        return prevFs;
+      return {
+        ...prevFs,
+        [selectName]: {
+          type: "select",
+          options: args.options,
+          defaultValue,
+          currentValue: defaultValue
+        }
+      };
+    });
+  }, [JSON.stringify(args.options), defaultValue, selectName, setFixtureState]);
+}
+function useSetSelectValue(selectName) {
+  const [, setFixtureState] = useFixtureState("inputs");
+  return reactExports.useCallback((value) => {
+    setFixtureState((prevFs) => {
+      const inputFs = prevFs && prevFs[selectName];
+      if (!inputFs || inputFs.type !== "select") {
+        console.warn(`Invalid fixture state for select: ${selectName}`);
+        return prevFs ?? {};
+      }
+      return {
+        ...prevFs,
+        [selectName]: {
+          ...inputFs,
+          currentValue: value
+        }
+      };
+    });
+  }, [selectName, setFixtureState]);
+}
+function useFixtureSelect(selectName, args) {
+  if (!args || !args.options || !args.options.length)
+    throw new Error("No options provided to useSelect");
+  if (typeof args.options[0] === "object") {
+    if (!args.options[0].options.length)
+      throw new Error("No options provided to useSelect");
+  }
+  useSelectFixtureState(selectName, args);
+  const currentValue = useCurrentSelectValue(selectName, args);
+  const setValue = useSetSelectValue(selectName);
+  return [currentValue, setValue];
+}
 var jsxRuntime = { exports: {} };
 var reactJsxRuntime_production = {};
 /**
@@ -500,7 +627,7 @@ function handleAndDispatchCustomEvent(name, handler, detail, { discrete }) {
 }
 var useLayoutEffect2 = Boolean(globalThis == null ? void 0 : globalThis.document) ? reactExports.useLayoutEffect : () => {
 };
-var useReactId = React["useId".toString()] || (() => void 0);
+var useReactId = React$1["useId".toString()] || (() => void 0);
 var count$1 = 0;
 function useId(deterministicId) {
   const [id, setId] = reactExports.useState(useReactId());
@@ -6141,7 +6268,7 @@ const cva = (base, config) => (props) => {
   return cx(base, getVariantClassNames, getCompoundVariantClassNames, props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
 };
 const buttonVariants = cva(
-  "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -6154,8 +6281,8 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        sm: "h-8 rounded-2xl gap-1.5 px-3 has-[>svg]:px-2.5",
+        lg: "h-10 rounded-2xl px-6 has-[>svg]:px-4",
         icon: "size-9"
       }
     },
@@ -6221,13 +6348,13 @@ function createCollection(name) {
   );
   const CollectionProvider = (props) => {
     const { scope, children } = props;
-    const ref = React$1.useRef(null);
-    const itemMap = React$1.useRef(/* @__PURE__ */ new Map()).current;
+    const ref = React.useRef(null);
+    const itemMap = React.useRef(/* @__PURE__ */ new Map()).current;
     return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionProviderImpl, { scope, itemMap, collectionRef: ref, children });
   };
   CollectionProvider.displayName = PROVIDER_NAME2;
   const COLLECTION_SLOT_NAME = name + "CollectionSlot";
-  const CollectionSlot = React$1.forwardRef(
+  const CollectionSlot = React.forwardRef(
     (props, forwardedRef) => {
       const { scope, children } = props;
       const context = useCollectionContext(COLLECTION_SLOT_NAME, scope);
@@ -6238,13 +6365,13 @@ function createCollection(name) {
   CollectionSlot.displayName = COLLECTION_SLOT_NAME;
   const ITEM_SLOT_NAME = name + "CollectionItemSlot";
   const ITEM_DATA_ATTR = "data-radix-collection-item";
-  const CollectionItemSlot = React$1.forwardRef(
+  const CollectionItemSlot = React.forwardRef(
     (props, forwardedRef) => {
       const { scope, children, ...itemData } = props;
-      const ref = React$1.useRef(null);
+      const ref = React.useRef(null);
       const composedRefs = useComposedRefs(forwardedRef, ref);
       const context = useCollectionContext(ITEM_SLOT_NAME, scope);
-      React$1.useEffect(() => {
+      React.useEffect(() => {
         context.itemMap.set(ref, { ref, ...itemData });
         return () => void context.itemMap.delete(ref);
       });
@@ -6254,7 +6381,7 @@ function createCollection(name) {
   CollectionItemSlot.displayName = ITEM_SLOT_NAME;
   function useCollection2(scope) {
     const context = useCollectionContext(name + "CollectionConsumer", scope);
-    const getItems = React$1.useCallback(() => {
+    const getItems = React.useCallback(() => {
       const collectionNode = context.collectionRef.current;
       if (!collectionNode) return [];
       const orderedNodes = Array.from(collectionNode.querySelectorAll(`[${ITEM_DATA_ATTR}]`));
@@ -10411,98 +10538,151 @@ const fixture10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePro
   __proto__: null,
   default: CheckboxFixture
 }, Symbol.toStringTag, { value: "Module" }));
-function Card({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+function Card({
+  title,
+  headerSecondary,
+  description,
+  footerPrimary,
+  footerSecondary,
+  className,
+  children
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
       "data-slot": "card",
-      className: cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-        className
-      ),
-      ...props
+      className: cn("text-card-foreground flex flex-col", className),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CardHeader,
+          {
+            title,
+            headerSecondary,
+            description
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            "data-slot": "card-content",
+            className: cn(
+              "bg-card rounded-b-4xl border-x border-b px-6 py-2",
+              footerPrimary && "rounded-br-none"
+            ),
+            children
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CardFooter,
+          {
+            footerPrimary,
+            footerSecondary
+          }
+        )
+      ]
     }
   );
 }
-function CardHeader({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+function CardHeader({
+  title,
+  headerSecondary,
+  description,
+  className
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
       "data-slot": "card-header",
-      className: cn("flex flex-col gap-1.5 px-6", className),
-      ...props
+      className: cn("flex min-h-6 flex-col", className),
+      children: [
+        title && /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitlebar, { title, headerSecondary }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            "data-slot": "card-description",
+            className: cn(
+              "bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pt-3 pb-4 text-sm",
+              !title && "rounded-tl-4xl"
+            ),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "relative", children: description })
+          }
+        )
+      ]
     }
   );
 }
-function CardTitle({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      "data-slot": "card-title",
-      className: cn("leading-none font-semibold", className),
-      ...props
-    }
-  );
+function CardTitlebar({ title, headerSecondary, className }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { "data-slot": "card-titlebar", className: cn("card-titlebar", className), children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("card-titlebar-title flex-auto"), children: title }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("card-titlebar-secondary"), children: headerSecondary })
+  ] });
 }
-function CardDescription({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      "data-slot": "card-description",
-      className: cn("text-muted-foreground text-sm", className),
-      ...props
-    }
-  );
-}
-function CardContent({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      "data-slot": "card-content",
-      className: cn("px-6", className),
-      ...props
-    }
-  );
-}
-function CardFooter({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+function CardFooter({
+  footerPrimary,
+  footerSecondary,
+  className
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: footerPrimary && /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
       "data-slot": "card-footer",
-      className: cn("flex items-center px-6", className),
-      ...props
+      className: cn(
+        "card-footer",
+        !footerPrimary && "bg-card rounded-b-4xl border border-t-0",
+        className
+      ),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-footer-secondary", children: footerSecondary }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-footer-primary", children: footerPrimary })
+      ]
     }
-  );
+  ) });
 }
 function CardFixture() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "w-[350px]", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(CardHeader, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { children: "Create project" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(CardDescription, { children: "Deploy your new project in one-click." })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(CardContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("form", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid w-full items-center gap-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col space-y-1.5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Label$1, { htmlFor: "name", children: "Name" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { id: "name", placeholder: "Name of your project" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col space-y-1.5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Label$1, { htmlFor: "framework", children: "Framework" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Select, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectTrigger, { id: "framework", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, { placeholder: "Select" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(SelectContent, { position: "popper", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "next", children: "Next.js" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "sveltekit", children: "SvelteKit" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "astro", children: "Astro" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "nuxt", children: "Nuxt.js" })
+  const [title] = useFixtureInput("Title", "create_project");
+  const [headerSecondary] = useFixtureInput("Header secondary", "");
+  const [headerDescription] = useFixtureInput(
+    "Header description",
+    "Deploy your new project in one-click."
+  );
+  const [footerLayout] = useFixtureSelect("Footer layout", {
+    options: ["two-button footer", "one-button footer", "no footer"]
+  });
+  const twoButtonFooter = {
+    footerPrimary: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { children: "deploy" }),
+    footerSecondary: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "outline", children: "cancel" })
+  };
+  const oneButtonFooter = {
+    footerPrimary: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { children: "deploy" })
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Card,
+    {
+      title,
+      headerSecondary,
+      description: headerDescription,
+      ...footerLayout === "two-button footer" && twoButtonFooter,
+      ...footerLayout === "one-button footer" && oneButtonFooter,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx("form", { className: "relative z-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid w-full items-center gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Label$1, { htmlFor: "name", children: "Name" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { id: "name", placeholder: "name of your project" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col space-y-1.5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Label$1, { htmlFor: "framework", children: "Framework" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Select, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectTrigger, { id: "framework", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, { placeholder: "select" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(SelectContent, { position: "popper", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "next", children: "Next.js" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "sveltekit", children: "SvelteKit" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "astro", children: "Astro" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "nuxt", children: "Nuxt.js" })
+            ] })
           ] })
         ] })
-      ] })
-    ] }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(CardFooter, { className: "flex justify-between", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "outline", children: "Cancel" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { children: "Deploy" })
-    ] })
-  ] });
+      ] }) })
+    }
+  );
 }
 const fixture11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,

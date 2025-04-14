@@ -1,68 +1,121 @@
-import * as React from 'react'
-
 import { cn } from '@/lib/utils'
+import { ReactNode } from 'react'
 
-function Card({ className, ...props }: React.ComponentProps<'div'>) {
+interface CardHeaderProps {
+  title?: ReactNode
+  headerSecondary?: ReactNode
+  description?: ReactNode
+  className?: string
+}
+
+interface CardTitleProps {
+  title: ReactNode
+  headerSecondary?: ReactNode
+  className?: string
+}
+
+interface CardFooterProps {
+  footerPrimary?: ReactNode
+  footerSecondary?: ReactNode
+  className?: string
+  children?: ReactNode
+}
+
+export function Card({
+  title,
+  headerSecondary,
+  description,
+  footerPrimary,
+  footerSecondary,
+  className,
+  children,
+}: CardHeaderProps & CardFooterProps) {
   return (
     <div
       data-slot="card"
-      className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm',
-        className,
-      )}
-      {...props}
-    />
+      className={cn('text-card-foreground flex flex-col', className)}
+    >
+      <CardHeader
+        title={title}
+        headerSecondary={headerSecondary}
+        description={description}
+      />
+
+      <div
+        data-slot="card-content"
+        className={cn(
+          'bg-card rounded-b-4xl border-x border-b px-6 py-2',
+          footerPrimary && 'rounded-br-none',
+        )}
+      >
+        {children}
+      </div>
+
+      <CardFooter
+        footerPrimary={footerPrimary}
+        footerSecondary={footerSecondary}
+      />
+    </div>
   )
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
+function CardHeader({
+  title,
+  headerSecondary,
+  description,
+  className,
+}: CardHeaderProps) {
   return (
     <div
       data-slot="card-header"
-      className={cn('flex flex-col gap-1.5 px-6', className)}
-      {...props}
-    />
+      className={cn('flex min-h-6 flex-col', className)}
+    >
+      {title && (
+        <CardTitlebar title={title} headerSecondary={headerSecondary} />
+      )}
+      <div
+        data-slot="card-description"
+        className={cn(
+          'bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pt-3 pb-4 text-sm',
+          !title && 'rounded-tl-4xl',
+        )}
+      >
+        <span className="relative">{description}</span>
+      </div>
+    </div>
   )
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
+function CardTitlebar({ title, headerSecondary, className }: CardTitleProps) {
   return (
-    <div
-      data-slot="card-title"
-      className={cn('leading-none font-semibold', className)}
-      {...props}
-    />
+    <div data-slot="card-titlebar" className={cn('card-titlebar', className)}>
+      <div className={cn('card-titlebar-title flex-auto')}>{title}</div>
+      <div className={cn('card-titlebar-secondary')}>{headerSecondary}</div>
+    </div>
   )
 }
 
-function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
+function CardFooter({
+  footerPrimary,
+  footerSecondary,
+  className,
+}: CardFooterProps) {
   return (
-    <div
-      data-slot="card-description"
-      className={cn('text-muted-foreground text-sm', className)}
-      {...props}
-    />
+    <>
+      {footerPrimary && (
+        <div
+          data-slot="card-footer"
+          className={cn(
+            'card-footer',
+            !footerPrimary && 'bg-card rounded-b-4xl border border-t-0',
+            className,
+          )}
+        >
+          <div className="card-footer-secondary">{footerSecondary}</div>
+
+          <div className="card-footer-primary">{footerPrimary}</div>
+        </div>
+      )}
+    </>
   )
 }
-
-function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn('px-6', className)}
-      {...props}
-    />
-  )
-}
-
-function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn('flex items-center px-6', className)}
-      {...props}
-    />
-  )
-}
-
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
