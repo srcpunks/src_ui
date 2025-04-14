@@ -15,6 +15,7 @@ jobs:
       - name: Detect Version Change
         id: detect_version
         run: |
+          set -e
           CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
           PREV_VERSION=$(git show HEAD^:package.json | node -e "console.log(require('/dev/stdin').version)")
           if [[ "$CURRENT_VERSION" != "$PREV_VERSION" ]]; then
