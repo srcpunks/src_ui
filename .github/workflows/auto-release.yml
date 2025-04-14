@@ -11,33 +11,34 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Detect Version Change
-        id: detect_version
+      - name: Check version changes
+        uses: EndBug/version-check@v2
+        id: check
+
+      - name: Create Git Tag
+        if: steps.check.outputs.changed == 'true'
         run: |
-          set -e
-          CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
-          PREV_VERSION=$(git show HEAD^:package.json | node -e "console.log(require('/dev/stdin').version)")
-          if [[ "$CURRENT_VERSION" != "$PREV_VERSION" ]]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "new_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-            echo "prev_version=$PREV_VERSION" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git tag -a "${{ steps.check.outputs.version }}" -m "Release ${{ steps.check.outputs.version }}"
+          git push origin "${{ steps.check.outputs.version }}"
 
       - name: Create GitHub Release
-        if: steps.detect_version.outputs.changed == 'true'
+        if: steps.check.outputs.changed == 'true'
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.detect_version.outputs.new_version }}
-          name: Release v${{ steps.detect_version.outputs.new_version }}
+          tag_name: ${{ steps.check.outputs.version }}
+          name: Release ${{ steps.check.outputs.version }}
           generate_release_notes: true
 
       - name: Publish to npm
-        if: steps.detect_version.outputs.changed == 'true'
+        if: steps.check.outputs.changed == 'true'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
