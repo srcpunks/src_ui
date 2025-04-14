@@ -8,7 +8,7 @@ interface CardHeaderProps {
   className?: string
 }
 
-interface CartTitleProps {
+interface CardTitleProps {
   title: ReactNode
   headerSecondary?: ReactNode
   className?: string
@@ -86,7 +86,7 @@ function CardHeader({
   )
 }
 
-function CardTitlebar({ title, headerSecondary, className }: CartTitleProps) {
+function CardTitlebar({ title, headerSecondary, className }: CardTitleProps) {
   return (
     <div data-slot="card-titlebar" className={cn('card-titlebar', className)}>
       <div className={cn('card-titlebar-title flex-auto')}>{title}</div>
