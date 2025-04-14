@@ -1,0 +1,43 @@
+name: Auto Release and Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Detect Version Change
+        id: detect_version
+        run: |
+          set -e
+          CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
+          PREV_VERSION=$(git show HEAD^:package.json | node -e "console.log(require('/dev/stdin').version)")
+          if [[ "$CURRENT_VERSION" != "$PREV_VERSION" ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "new_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "prev_version=$PREV_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        if: steps.detect_version.outputs.changed == 'true'
+        uses: actions/create-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.detect_version.outputs.new_version }}
+          release_name: Release v${{ steps.detect_version.outputs.new_version }}
+          generate_release_notes: true
+
+      - name: Publish to npm
+        if: steps.detect_version.outputs.changed == 'true'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
