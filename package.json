@@ -2,7 +2,7 @@
   "name": "@srcpunks/src_ui",
   "description": "@srcpunks/src_ui is a UI component library for @srcpunks apps",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "module": "./dist/main.js",
   "exports": "./dist/main.js",
