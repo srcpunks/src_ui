@@ -28,12 +28,12 @@ jobs:
 
       - name: Create GitHub Release
         if: steps.detect_version.outputs.changed == 'true'
-        uses: actions/create-release@v3
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.detect_version.outputs.new_version }}
-          release_name: Release v${{ steps.detect_version.outputs.new_version }}
+          name: Release v${{ steps.detect_version.outputs.new_version }}
           generate_release_notes: true
 
       - name: Publish to npm
