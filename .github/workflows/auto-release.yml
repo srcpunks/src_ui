@@ -27,8 +27,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-          git tag -a "${{ steps.check.outputs.version }}" -m "Release ${{ steps.check.outputs.version }}"
-          git push origin "${{ steps.check.outputs.version }}"
+          git tag -a "v${{ steps.check.outputs.version }}" -m "Release v${{ steps.check.outputs.version }}"
+          git push origin "v${{ steps.check.outputs.version }}"
 
       - name: Create GitHub Release
         if: steps.check.outputs.changed == 'true'
@@ -36,8 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.check.outputs.version }}
-          name: Release ${{ steps.check.outputs.version }}
+          tag_name: v${{ steps.check.outputs.version }}
+          name: Release v${{ steps.check.outputs.version }}
           generate_release_notes: true
 
       - name: Publish to npm
