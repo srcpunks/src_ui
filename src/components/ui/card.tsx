@@ -44,11 +44,11 @@ export function Card({
       <div
         data-slot="card-content"
         className={cn(
-          'bg-card rounded-b-4xl border-x border-b px-6 py-2',
+          'bg-card rounded-b-4xl border-x border-b px-6',
           footerPrimary && 'rounded-br-none',
         )}
       >
-        {children}
+        <div className="bg-card relative z-[1] py-2">{children}</div>
       </div>
 
       <CardFooter
@@ -76,11 +76,13 @@ function CardHeader({
       <div
         data-slot="card-description"
         className={cn(
-          'bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pt-3 pb-4 text-sm',
+          'bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pb-4 text-sm',
           !title && 'rounded-tl-4xl',
         )}
       >
-        <span className="relative">{description}</span>
+        <div className="bg-card relative z-[1] size-full pt-3">
+          {description}
+        </div>
       </div>
     </div>
   )
