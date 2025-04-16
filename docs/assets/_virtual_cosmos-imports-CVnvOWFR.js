@@ -1,4 +1,4 @@
-import { u as useFixtureState, e as extendWithValue, R as React, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React$1 } from "./index-CNo4l2x9.js";
+import { u as useFixtureState, e as extendWithValue, R as React, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React$1 } from "./index-Bza_mDgs.js";
 function useCurrentInputValue(inputName, defaultValue) {
   const [fixtureState] = useFixtureState("inputs");
   const inputFs = fixtureState && fixtureState[inputName];
@@ -294,43 +294,60 @@ function composeContextScopes(...scopes) {
 }
 var reactDomExports = requireReactDom();
 const ReactDOM = /* @__PURE__ */ getDefaultExportFromCjs(reactDomExports);
-var Slot = reactExports.forwardRef((props, forwardedRef) => {
-  const { children, ...slotProps } = props;
-  const childrenArray = reactExports.Children.toArray(children);
-  const slottable = childrenArray.find(isSlottable);
-  if (slottable) {
-    const newElement = slottable.props.children;
-    const newChildren = childrenArray.map((child) => {
-      if (child === slottable) {
-        if (reactExports.Children.count(newElement) > 1) return reactExports.Children.only(null);
-        return reactExports.isValidElement(newElement) ? newElement.props.children : null;
-      } else {
-        return child;
-      }
-    });
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children: reactExports.isValidElement(newElement) ? reactExports.cloneElement(newElement, void 0, newChildren) : null });
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children });
-});
-Slot.displayName = "Slot";
-var SlotClone = reactExports.forwardRef((props, forwardedRef) => {
-  const { children, ...slotProps } = props;
-  if (reactExports.isValidElement(children)) {
-    const childrenRef = getElementRef$1(children);
-    const props2 = mergeProps(slotProps, children.props);
-    if (children.type !== reactExports.Fragment) {
-      props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+// @__NO_SIDE_EFFECTS__
+function createSlot(ownerName) {
+  const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
+  const Slot2 = reactExports.forwardRef((props, forwardedRef) => {
+    const { children, ...slotProps } = props;
+    const childrenArray = reactExports.Children.toArray(children);
+    const slottable = childrenArray.find(isSlottable);
+    if (slottable) {
+      const newElement = slottable.props.children;
+      const newChildren = childrenArray.map((child) => {
+        if (child === slottable) {
+          if (reactExports.Children.count(newElement) > 1) return reactExports.Children.only(null);
+          return reactExports.isValidElement(newElement) ? newElement.props.children : null;
+        } else {
+          return child;
+        }
+      });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children: reactExports.isValidElement(newElement) ? reactExports.cloneElement(newElement, void 0, newChildren) : null });
     }
-    return reactExports.cloneElement(children, props2);
-  }
-  return reactExports.Children.count(children) > 1 ? reactExports.Children.only(null) : null;
-});
-SlotClone.displayName = "SlotClone";
-var Slottable = ({ children }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children });
-};
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children });
+  });
+  Slot2.displayName = `${ownerName}.Slot`;
+  return Slot2;
+}
+var Slot$2 = /* @__PURE__ */ createSlot("Slot");
+// @__NO_SIDE_EFFECTS__
+function createSlotClone(ownerName) {
+  const SlotClone = reactExports.forwardRef((props, forwardedRef) => {
+    const { children, ...slotProps } = props;
+    if (reactExports.isValidElement(children)) {
+      const childrenRef = getElementRef$1(children);
+      const props2 = mergeProps(slotProps, children.props);
+      if (children.type !== reactExports.Fragment) {
+        props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+      }
+      return reactExports.cloneElement(children, props2);
+    }
+    return reactExports.Children.count(children) > 1 ? reactExports.Children.only(null) : null;
+  });
+  SlotClone.displayName = `${ownerName}.SlotClone`;
+  return SlotClone;
+}
+var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
+// @__NO_SIDE_EFFECTS__
+function createSlottable(ownerName) {
+  const Slottable2 = ({ children }) => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children });
+  };
+  Slottable2.displayName = `${ownerName}.Slottable`;
+  Slottable2.__radixId = SLOTTABLE_IDENTIFIER;
+  return Slottable2;
+}
 function isSlottable(child) {
-  return reactExports.isValidElement(child) && child.type === Slottable;
+  return reactExports.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
 }
 function mergeProps(slotProps, childProps) {
   const overrideProps = { ...childProps };
@@ -388,9 +405,10 @@ var NODES = [
   "ul"
 ];
 var Primitive = NODES.reduce((primitive, node) => {
+  const Slot2 = /* @__PURE__ */ createSlot(`Primitive.${node}`);
   const Node2 = reactExports.forwardRef((props, forwardedRef) => {
     const { asChild, ...primitiveProps } = props;
-    const Comp = asChild ? Slot : node;
+    const Comp = asChild ? Slot2 : node;
     if (typeof window !== "undefined") {
       window[Symbol.for("radix-ui")] = true;
     }
@@ -625,9 +643,9 @@ function handleAndDispatchCustomEvent(name, handler, detail, { discrete }) {
     target.dispatchEvent(event);
   }
 }
-var useLayoutEffect2 = Boolean(globalThis == null ? void 0 : globalThis.document) ? reactExports.useLayoutEffect : () => {
+var useLayoutEffect2 = (globalThis == null ? void 0 : globalThis.document) ? reactExports.useLayoutEffect : () => {
 };
-var useReactId = React$1["useId".toString()] || (() => void 0);
+var useReactId = React$1[" useId ".trim().toString()] || (() => void 0);
 var count$1 = 0;
 function useId(deterministicId) {
   const [id, setId] = reactExports.useState(useReactId());
@@ -3016,7 +3034,7 @@ var TooltipProvider$1 = (props) => {
     disableHoverableContent = false,
     children
   } = props;
-  const [isOpenDelayed, setIsOpenDelayed] = reactExports.useState(true);
+  const isOpenDelayedRef = reactExports.useRef(true);
   const isPointerInTransitRef = reactExports.useRef(false);
   const skipDelayTimerRef = reactExports.useRef(0);
   reactExports.useEffect(() => {
@@ -3027,16 +3045,16 @@ var TooltipProvider$1 = (props) => {
     TooltipProviderContextProvider,
     {
       scope: __scopeTooltip,
-      isOpenDelayed,
+      isOpenDelayedRef,
       delayDuration,
       onOpen: reactExports.useCallback(() => {
         window.clearTimeout(skipDelayTimerRef.current);
-        setIsOpenDelayed(false);
+        isOpenDelayedRef.current = false;
       }, []),
       onClose: reactExports.useCallback(() => {
         window.clearTimeout(skipDelayTimerRef.current);
         skipDelayTimerRef.current = window.setTimeout(
-          () => setIsOpenDelayed(true),
+          () => isOpenDelayedRef.current = true,
           skipDelayDuration
         );
       }, [skipDelayDuration]),
@@ -3123,9 +3141,9 @@ var Tooltip$1 = (props) => {
       trigger,
       onTriggerChange: setTrigger,
       onTriggerEnter: reactExports.useCallback(() => {
-        if (providerContext.isOpenDelayed) handleDelayedOpen();
+        if (providerContext.isOpenDelayedRef.current) handleDelayedOpen();
         else handleOpen();
-      }, [providerContext.isOpenDelayed, handleDelayedOpen, handleOpen]),
+      }, [providerContext.isOpenDelayedRef, handleDelayedOpen, handleOpen]),
       onTriggerLeave: reactExports.useCallback(() => {
         if (disableHoverableContent) {
           handleClose();
@@ -3176,6 +3194,9 @@ var TooltipTrigger$1 = reactExports.forwardRef(
           hasPointerMoveOpenedRef.current = false;
         }),
         onPointerDown: composeEventHandlers(props.onPointerDown, () => {
+          if (context.open) {
+            context.onClose();
+          }
           isPointerDownRef.current = true;
           document.addEventListener("pointerup", handlePointerUp, { once: true });
         }),
@@ -3270,6 +3291,7 @@ var TooltipContentHoverable = reactExports.forwardRef((props, forwardedRef) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(TooltipContentImpl, { ...props, ref: composedRefs });
 });
 var [VisuallyHiddenContentContextProvider, useVisuallyHiddenContentContext] = createTooltipContext(TOOLTIP_NAME, { isInside: false });
+var Slottable = /* @__PURE__ */ createSlottable("TooltipContent");
 var TooltipContentImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const {
@@ -3856,8 +3878,8 @@ const colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch))\(.+\)$/;
 const shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
 const imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
 const isFraction = (value) => fractionRegex.test(value);
-const isNumber = (value) => Boolean(value) && !Number.isNaN(Number(value));
-const isInteger = (value) => Boolean(value) && Number.isInteger(Number(value));
+const isNumber = (value) => !!value && !Number.isNaN(Number(value));
+const isInteger = (value) => !!value && Number.isInteger(Number(value));
 const isPercent = (value) => value.endsWith("%") && isNumber(value.slice(0, -1));
 const isTshirtSize = (value) => tshirtUnitRegex.test(value);
 const isAny = () => true;
@@ -3877,7 +3899,7 @@ const isArbitraryLength = (value) => getIsArbitraryValue(value, isLabelLength, i
 const isArbitraryNumber = (value) => getIsArbitraryValue(value, isLabelNumber, isNumber);
 const isArbitraryPosition = (value) => getIsArbitraryValue(value, isLabelPosition, isNever);
 const isArbitraryImage = (value) => getIsArbitraryValue(value, isLabelImage, isImage);
-const isArbitraryShadow = (value) => getIsArbitraryValue(value, isNever, isShadow);
+const isArbitraryShadow = (value) => getIsArbitraryValue(value, isLabelShadow, isShadow);
 const isArbitraryVariable = (value) => arbitraryVariableRegex.test(value);
 const isArbitraryVariableLength = (value) => getIsArbitraryVariable(value, isLabelLength);
 const isArbitraryVariableFamilyName = (value) => getIsArbitraryVariable(value, isLabelFamilyName);
@@ -3905,11 +3927,9 @@ const getIsArbitraryVariable = (value, testLabel, shouldMatchNoLabel = false) =>
   }
   return false;
 };
-const isLabelPosition = (label) => label === "position";
-const imageLabels = /* @__PURE__ */ new Set(["image", "url"]);
-const isLabelImage = (label) => imageLabels.has(label);
-const sizeLabels = /* @__PURE__ */ new Set(["length", "size", "percentage"]);
-const isLabelSize = (label) => sizeLabels.has(label);
+const isLabelPosition = (label) => label === "position" || label === "percentage";
+const isLabelImage = (label) => label === "image" || label === "url";
+const isLabelSize = (label) => label === "length" || label === "size" || label === "bg-size";
 const isLabelLength = (label) => label === "length";
 const isLabelNumber = (label) => label === "number";
 const isLabelFamilyName = (label) => label === "family-name";
@@ -3927,6 +3947,7 @@ const getDefaultConfig = () => {
   const themeRadius = fromTheme("radius");
   const themeShadow = fromTheme("shadow");
   const themeInsetShadow = fromTheme("inset-shadow");
+  const themeTextShadow = fromTheme("text-shadow");
   const themeDropShadow = fromTheme("drop-shadow");
   const themeBlur = fromTheme("blur");
   const themePerspective = fromTheme("perspective");
@@ -3934,7 +3955,26 @@ const getDefaultConfig = () => {
   const themeEase = fromTheme("ease");
   const themeAnimate = fromTheme("animate");
   const scaleBreak = () => ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
-  const scalePosition = () => ["bottom", "center", "left", "left-bottom", "left-top", "right", "right-bottom", "right-top", "top"];
+  const scalePosition = () => [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right",
+    "top-left",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "left-top",
+    "top-right",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "right-top",
+    "bottom-right",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "right-bottom",
+    "bottom-left",
+    // Deprecated since Tailwind CSS v4.1.0, see https://github.com/tailwindlabs/tailwindcss/pull/17378
+    "left-bottom"
+  ];
+  const scalePositionWithArbitrary = () => [...scalePosition(), isArbitraryVariable, isArbitraryValue];
   const scaleOverflow = () => ["auto", "hidden", "clip", "visible", "scroll"];
   const scaleOverscroll = () => ["auto", "contain", "none"];
   const scaleUnambiguousSpacing = () => [isArbitraryVariable, isArbitraryValue, themeSpacing];
@@ -3942,15 +3982,24 @@ const getDefaultConfig = () => {
   const scaleGridTemplateColsRows = () => [isInteger, "none", "subgrid", isArbitraryVariable, isArbitraryValue];
   const scaleGridColRowStartAndEnd = () => ["auto", {
     span: ["full", isInteger, isArbitraryVariable, isArbitraryValue]
-  }, isArbitraryVariable, isArbitraryValue];
+  }, isInteger, isArbitraryVariable, isArbitraryValue];
   const scaleGridColRowStartOrEnd = () => [isInteger, "auto", isArbitraryVariable, isArbitraryValue];
   const scaleGridAutoColsRows = () => ["auto", "min", "max", "fr", isArbitraryVariable, isArbitraryValue];
-  const scaleAlignPrimaryAxis = () => ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline"];
-  const scaleAlignSecondaryAxis = () => ["start", "end", "center", "stretch"];
+  const scaleAlignPrimaryAxis = () => ["start", "end", "center", "between", "around", "evenly", "stretch", "baseline", "center-safe", "end-safe"];
+  const scaleAlignSecondaryAxis = () => ["start", "end", "center", "stretch", "center-safe", "end-safe"];
   const scaleMargin = () => ["auto", ...scaleUnambiguousSpacing()];
   const scaleSizing = () => [isFraction, "auto", "full", "dvw", "dvh", "lvw", "lvh", "svw", "svh", "min", "max", "fit", ...scaleUnambiguousSpacing()];
   const scaleColor = () => [themeColor, isArbitraryVariable, isArbitraryValue];
-  const scaleGradientStopPosition = () => [isPercent, isArbitraryLength];
+  const scaleBgPosition = () => [...scalePosition(), isArbitraryVariablePosition, isArbitraryPosition, {
+    position: [isArbitraryVariable, isArbitraryValue]
+  }];
+  const scaleBgRepeat = () => ["no-repeat", {
+    repeat: ["", "x", "y", "space", "round"]
+  }];
+  const scaleBgSize = () => ["auto", "cover", "contain", isArbitraryVariableSize, isArbitrarySize, {
+    size: [isArbitraryVariable, isArbitraryValue]
+  }];
+  const scaleGradientStopPosition = () => [isPercent, isArbitraryVariableLength, isArbitraryLength];
   const scaleRadius = () => [
     // Deprecated since Tailwind CSS v4.0.0
     "",
@@ -3963,6 +4012,7 @@ const getDefaultConfig = () => {
   const scaleBorderWidth = () => ["", isNumber, isArbitraryVariableLength, isArbitraryLength];
   const scaleLineStyle = () => ["solid", "dashed", "dotted", "double"];
   const scaleBlendMode = () => ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
+  const scaleMaskImagePosition = () => [isNumber, isPercent, isArbitraryVariablePosition, isArbitraryPosition];
   const scaleBlur = () => [
     // Deprecated since Tailwind CSS v4.0.0
     "",
@@ -3971,7 +4021,6 @@ const getDefaultConfig = () => {
     isArbitraryVariable,
     isArbitraryValue
   ];
-  const scaleOrigin = () => ["center", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left", "top-left", isArbitraryVariable, isArbitraryValue];
   const scaleRotate = () => ["none", isNumber, isArbitraryVariable, isArbitraryValue];
   const scaleScale = () => ["none", isNumber, isArbitraryVariable, isArbitraryValue];
   const scaleSkew = () => [isNumber, isArbitraryVariable, isArbitraryValue];
@@ -3996,6 +4045,7 @@ const getDefaultConfig = () => {
       shadow: [isTshirtSize],
       spacing: ["px", isNumber],
       text: [isTshirtSize],
+      "text-shadow": [isTshirtSize],
       tracking: ["tighter", "tight", "normal", "wide", "wider", "widest"]
     },
     classGroups: {
@@ -4098,7 +4148,7 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/object-position
        */
       "object-position": [{
-        object: [...scalePosition(), isArbitraryValue, isArbitraryVariable]
+        object: scalePositionWithArbitrary()
       }],
       /**
        * Overflow
@@ -4405,14 +4455,18 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/align-items
        */
       "align-items": [{
-        items: [...scaleAlignSecondaryAxis(), "baseline"]
+        items: [...scaleAlignSecondaryAxis(), {
+          baseline: ["", "last"]
+        }]
       }],
       /**
        * Align Self
        * @see https://tailwindcss.com/docs/align-self
        */
       "align-self": [{
-        self: ["auto", ...scaleAlignSecondaryAxis(), "baseline"]
+        self: ["auto", ...scaleAlignSecondaryAxis(), {
+          baseline: ["", "last"]
+        }]
       }],
       /**
        * Place Content
@@ -4873,6 +4927,13 @@ const getDefaultConfig = () => {
         break: ["normal", "words", "all", "keep"]
       }],
       /**
+       * Overflow Wrap
+       * @see https://tailwindcss.com/docs/overflow-wrap
+       */
+      wrap: [{
+        wrap: ["break-word", "anywhere", "normal"]
+      }],
+      /**
        * Hyphens
        * @see https://tailwindcss.com/docs/hyphens
        */
@@ -4915,23 +4976,21 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/background-position
        */
       "bg-position": [{
-        bg: [...scalePosition(), isArbitraryVariablePosition, isArbitraryPosition]
+        bg: scaleBgPosition()
       }],
       /**
        * Background Repeat
        * @see https://tailwindcss.com/docs/background-repeat
        */
       "bg-repeat": [{
-        bg: ["no-repeat", {
-          repeat: ["", "x", "y", "space", "round"]
-        }]
+        bg: scaleBgRepeat()
       }],
       /**
        * Background Size
        * @see https://tailwindcss.com/docs/background-size
        */
       "bg-size": [{
-        bg: ["auto", "cover", "contain", isArbitraryVariableSize, isArbitrarySize]
+        bg: scaleBgSize()
       }],
       /**
        * Background Image
@@ -5300,7 +5359,7 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/outline-color
        */
       "outline-color": [{
-        outline: [themeColor]
+        outline: scaleColor()
       }],
       // ---------------
       // --- Effects ---
@@ -5331,7 +5390,7 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/box-shadow#adding-an-inset-shadow
        */
       "inset-shadow": [{
-        "inset-shadow": ["none", isArbitraryVariable, isArbitraryValue, themeInsetShadow]
+        "inset-shadow": ["none", themeInsetShadow, isArbitraryVariableShadow, isArbitraryShadow]
       }],
       /**
        * Inset Box Shadow Color
@@ -5394,6 +5453,20 @@ const getDefaultConfig = () => {
         "inset-ring": scaleColor()
       }],
       /**
+       * Text Shadow
+       * @see https://tailwindcss.com/docs/text-shadow
+       */
+      "text-shadow": [{
+        "text-shadow": ["none", themeTextShadow, isArbitraryVariableShadow, isArbitraryShadow]
+      }],
+      /**
+       * Text Shadow Color
+       * @see https://tailwindcss.com/docs/text-shadow#setting-the-shadow-color
+       */
+      "text-shadow-color": [{
+        "text-shadow": scaleColor()
+      }],
+      /**
        * Opacity
        * @see https://tailwindcss.com/docs/opacity
        */
@@ -5413,6 +5486,202 @@ const getDefaultConfig = () => {
        */
       "bg-blend": [{
         "bg-blend": scaleBlendMode()
+      }],
+      /**
+       * Mask Clip
+       * @see https://tailwindcss.com/docs/mask-clip
+       */
+      "mask-clip": [{
+        "mask-clip": ["border", "padding", "content", "fill", "stroke", "view"]
+      }, "mask-no-clip"],
+      /**
+       * Mask Composite
+       * @see https://tailwindcss.com/docs/mask-composite
+       */
+      "mask-composite": [{
+        mask: ["add", "subtract", "intersect", "exclude"]
+      }],
+      /**
+       * Mask Image
+       * @see https://tailwindcss.com/docs/mask-image
+       */
+      "mask-image-linear-pos": [{
+        "mask-linear": [isNumber]
+      }],
+      "mask-image-linear-from-pos": [{
+        "mask-linear-from": scaleMaskImagePosition()
+      }],
+      "mask-image-linear-to-pos": [{
+        "mask-linear-to": scaleMaskImagePosition()
+      }],
+      "mask-image-linear-from-color": [{
+        "mask-linear-from": scaleColor()
+      }],
+      "mask-image-linear-to-color": [{
+        "mask-linear-to": scaleColor()
+      }],
+      "mask-image-t-from-pos": [{
+        "mask-t-from": scaleMaskImagePosition()
+      }],
+      "mask-image-t-to-pos": [{
+        "mask-t-to": scaleMaskImagePosition()
+      }],
+      "mask-image-t-from-color": [{
+        "mask-t-from": scaleColor()
+      }],
+      "mask-image-t-to-color": [{
+        "mask-t-to": scaleColor()
+      }],
+      "mask-image-r-from-pos": [{
+        "mask-r-from": scaleMaskImagePosition()
+      }],
+      "mask-image-r-to-pos": [{
+        "mask-r-to": scaleMaskImagePosition()
+      }],
+      "mask-image-r-from-color": [{
+        "mask-r-from": scaleColor()
+      }],
+      "mask-image-r-to-color": [{
+        "mask-r-to": scaleColor()
+      }],
+      "mask-image-b-from-pos": [{
+        "mask-b-from": scaleMaskImagePosition()
+      }],
+      "mask-image-b-to-pos": [{
+        "mask-b-to": scaleMaskImagePosition()
+      }],
+      "mask-image-b-from-color": [{
+        "mask-b-from": scaleColor()
+      }],
+      "mask-image-b-to-color": [{
+        "mask-b-to": scaleColor()
+      }],
+      "mask-image-l-from-pos": [{
+        "mask-l-from": scaleMaskImagePosition()
+      }],
+      "mask-image-l-to-pos": [{
+        "mask-l-to": scaleMaskImagePosition()
+      }],
+      "mask-image-l-from-color": [{
+        "mask-l-from": scaleColor()
+      }],
+      "mask-image-l-to-color": [{
+        "mask-l-to": scaleColor()
+      }],
+      "mask-image-x-from-pos": [{
+        "mask-x-from": scaleMaskImagePosition()
+      }],
+      "mask-image-x-to-pos": [{
+        "mask-x-to": scaleMaskImagePosition()
+      }],
+      "mask-image-x-from-color": [{
+        "mask-x-from": scaleColor()
+      }],
+      "mask-image-x-to-color": [{
+        "mask-x-to": scaleColor()
+      }],
+      "mask-image-y-from-pos": [{
+        "mask-y-from": scaleMaskImagePosition()
+      }],
+      "mask-image-y-to-pos": [{
+        "mask-y-to": scaleMaskImagePosition()
+      }],
+      "mask-image-y-from-color": [{
+        "mask-y-from": scaleColor()
+      }],
+      "mask-image-y-to-color": [{
+        "mask-y-to": scaleColor()
+      }],
+      "mask-image-radial": [{
+        "mask-radial": [isArbitraryVariable, isArbitraryValue]
+      }],
+      "mask-image-radial-from-pos": [{
+        "mask-radial-from": scaleMaskImagePosition()
+      }],
+      "mask-image-radial-to-pos": [{
+        "mask-radial-to": scaleMaskImagePosition()
+      }],
+      "mask-image-radial-from-color": [{
+        "mask-radial-from": scaleColor()
+      }],
+      "mask-image-radial-to-color": [{
+        "mask-radial-to": scaleColor()
+      }],
+      "mask-image-radial-shape": [{
+        "mask-radial": ["circle", "ellipse"]
+      }],
+      "mask-image-radial-size": [{
+        "mask-radial": [{
+          closest: ["side", "corner"],
+          farthest: ["side", "corner"]
+        }]
+      }],
+      "mask-image-radial-pos": [{
+        "mask-radial-at": scalePosition()
+      }],
+      "mask-image-conic-pos": [{
+        "mask-conic": [isNumber]
+      }],
+      "mask-image-conic-from-pos": [{
+        "mask-conic-from": scaleMaskImagePosition()
+      }],
+      "mask-image-conic-to-pos": [{
+        "mask-conic-to": scaleMaskImagePosition()
+      }],
+      "mask-image-conic-from-color": [{
+        "mask-conic-from": scaleColor()
+      }],
+      "mask-image-conic-to-color": [{
+        "mask-conic-to": scaleColor()
+      }],
+      /**
+       * Mask Mode
+       * @see https://tailwindcss.com/docs/mask-mode
+       */
+      "mask-mode": [{
+        mask: ["alpha", "luminance", "match"]
+      }],
+      /**
+       * Mask Origin
+       * @see https://tailwindcss.com/docs/mask-origin
+       */
+      "mask-origin": [{
+        "mask-origin": ["border", "padding", "content", "fill", "stroke", "view"]
+      }],
+      /**
+       * Mask Position
+       * @see https://tailwindcss.com/docs/mask-position
+       */
+      "mask-position": [{
+        mask: scaleBgPosition()
+      }],
+      /**
+       * Mask Repeat
+       * @see https://tailwindcss.com/docs/mask-repeat
+       */
+      "mask-repeat": [{
+        mask: scaleBgRepeat()
+      }],
+      /**
+       * Mask Size
+       * @see https://tailwindcss.com/docs/mask-size
+       */
+      "mask-size": [{
+        mask: scaleBgSize()
+      }],
+      /**
+       * Mask Type
+       * @see https://tailwindcss.com/docs/mask-type
+       */
+      "mask-type": [{
+        "mask-type": ["alpha", "luminance"]
+      }],
+      /**
+       * Mask Image
+       * @see https://tailwindcss.com/docs/mask-image
+       */
+      "mask-image": [{
+        mask: ["none", isArbitraryVariable, isArbitraryValue]
       }],
       // ---------------
       // --- Filters ---
@@ -5461,9 +5730,16 @@ const getDefaultConfig = () => {
           "",
           "none",
           themeDropShadow,
-          isArbitraryVariable,
-          isArbitraryValue
+          isArbitraryVariableShadow,
+          isArbitraryShadow
         ]
+      }],
+      /**
+       * Drop Shadow Color
+       * @see https://tailwindcss.com/docs/filter-drop-shadow#setting-the-shadow-color
+       */
+      "drop-shadow-color": [{
+        "drop-shadow": scaleColor()
       }],
       /**
        * Grayscale
@@ -5688,7 +5964,7 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/perspective-origin
        */
       "perspective-origin": [{
-        "perspective-origin": scaleOrigin()
+        "perspective-origin": scalePositionWithArbitrary()
       }],
       /**
        * Rotate
@@ -5784,7 +6060,7 @@ const getDefaultConfig = () => {
        * @see https://tailwindcss.com/docs/transform-origin
        */
       "transform-origin": [{
-        origin: scaleOrigin()
+        origin: scalePositionWithArbitrary()
       }],
       /**
        * Transform Style
@@ -6152,10 +6428,10 @@ const getDefaultConfig = () => {
       "rounded-b": ["rounded-br", "rounded-bl"],
       "rounded-l": ["rounded-tl", "rounded-bl"],
       "border-spacing": ["border-spacing-x", "border-spacing-y"],
-      "border-w": ["border-w-s", "border-w-e", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
+      "border-w": ["border-w-x", "border-w-y", "border-w-s", "border-w-e", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
       "border-w-x": ["border-w-r", "border-w-l"],
       "border-w-y": ["border-w-t", "border-w-b"],
-      "border-color": ["border-color-s", "border-color-e", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
+      "border-color": ["border-color-x", "border-color-y", "border-color-s", "border-color-e", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
       "border-color-x": ["border-color-r", "border-color-l"],
       "border-color-y": ["border-color-t", "border-color-b"],
       translate: ["translate-x", "translate-y", "translate-none"],
@@ -6174,7 +6450,7 @@ const getDefaultConfig = () => {
     conflictingClassGroupModifiers: {
       "font-size": ["leading"]
     },
-    orderSensitiveModifiers: ["before", "after", "placeholder", "file", "marker", "selection", "first-line", "first-letter", "backdrop", "*", "**"]
+    orderSensitiveModifiers: ["*", "**", "after", "backdrop", "before", "details-content", "file", "first-letter", "first-line", "marker", "placeholder", "selection"]
   };
 };
 const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
@@ -6299,7 +6575,7 @@ function Button({
   asChild = false,
   ...props
 }) {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot$2 : "button";
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Comp,
     {
@@ -6354,17 +6630,19 @@ function createCollection(name) {
   };
   CollectionProvider.displayName = PROVIDER_NAME2;
   const COLLECTION_SLOT_NAME = name + "CollectionSlot";
+  const CollectionSlotImpl = /* @__PURE__ */ createSlot(COLLECTION_SLOT_NAME);
   const CollectionSlot = React.forwardRef(
     (props, forwardedRef) => {
       const { scope, children } = props;
       const context = useCollectionContext(COLLECTION_SLOT_NAME, scope);
       const composedRefs = useComposedRefs(forwardedRef, context.collectionRef);
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(Slot, { ref: composedRefs, children });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionSlotImpl, { ref: composedRefs, children });
     }
   );
   CollectionSlot.displayName = COLLECTION_SLOT_NAME;
   const ITEM_SLOT_NAME = name + "CollectionItemSlot";
   const ITEM_DATA_ATTR = "data-radix-collection-item";
+  const CollectionItemSlotImpl = /* @__PURE__ */ createSlot(ITEM_SLOT_NAME);
   const CollectionItemSlot = React.forwardRef(
     (props, forwardedRef) => {
       const { scope, children, ...itemData } = props;
@@ -6375,7 +6653,7 @@ function createCollection(name) {
         context.itemMap.set(ref, { ref, ...itemData });
         return () => void context.itemMap.delete(ref);
       });
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(Slot, { ...{ [ITEM_DATA_ATTR]: "" }, ref: composedRefs, children });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionItemSlotImpl, { ...{ [ITEM_DATA_ATTR]: "" }, ref: composedRefs, children });
     }
   );
   CollectionItemSlot.displayName = ITEM_SLOT_NAME;
@@ -8230,6 +8508,7 @@ var DialogOverlay = reactExports.forwardRef(
   }
 );
 DialogOverlay.displayName = OVERLAY_NAME;
+var Slot$1 = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
 var DialogOverlayImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const { __scopeDialog, ...overlayProps } = props;
@@ -8237,7 +8516,7 @@ var DialogOverlayImpl = reactExports.forwardRef(
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot$1, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         Primitive.div,
         {
           "data-state": getState$1(context.open),
@@ -8797,7 +9076,7 @@ function SidebarGroupLabel({
   asChild = false,
   ...props
 }) {
-  const Comp = asChild ? Slot : "div";
+  const Comp = asChild ? Slot$2 : "div";
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Comp,
     {
@@ -8877,7 +9156,7 @@ function SidebarMenuButton({
   className,
   ...props
 }) {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot$2 : "button";
   const { isMobile, state } = useSidebar();
   const button = /* @__PURE__ */ jsxRuntimeExports.jsx(
     Comp,
@@ -9296,6 +9575,7 @@ SelectContent$1.displayName = CONTENT_NAME;
 var CONTENT_MARGIN = 10;
 var [SelectContentProvider, useSelectContentContext] = createSelectContext(CONTENT_NAME);
 var CONTENT_IMPL_NAME = "SelectContentImpl";
+var Slot = /* @__PURE__ */ createSlot("SelectContent.RemoveScroll");
 var SelectContentImpl = reactExports.forwardRef(
   (props, forwardedRef) => {
     const {
@@ -10566,10 +10846,10 @@ function Card({
           {
             "data-slot": "card-content",
             className: cn(
-              "bg-card rounded-b-4xl border-x border-b px-6 py-2",
+              "bg-card rounded-b-4xl border-x border-b px-6",
               footerPrimary && "rounded-br-none"
             ),
-            children
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-card relative z-[1] py-2", children })
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -10601,10 +10881,10 @@ function CardHeader({
           {
             "data-slot": "card-description",
             className: cn(
-              "bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pt-3 pb-4 text-sm",
+              "bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pb-4 text-sm",
               !title && "rounded-tl-4xl"
             ),
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "relative", children: description })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-card relative z-[1] size-full pt-3", children: description })
           }
         )
       ]
