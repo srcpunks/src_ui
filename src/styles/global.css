@@ -4,34 +4,46 @@
 
 @plugin "tailwindcss-animate";
 
+@theme {
+  --radius-4xl: 1.8rem;
+}
+
 :root {
-  --app-color-l: 28%;
-  --app-color-c: 0.1803;
-  --app-color-h: 320.25;
-  --app-color: oklch(var(--app-color-l) var(--app-color-c) var(--app-color-h));
-  --dark-app-color: oklch(
-    calc(var(--app-color-l) - 45%) calc(var(--app-color-c) * 0.213)
-      calc(var(--app-color-h) + 20)
+  --app-color: 320;
+
+  --app-color-lightness: 50%;
+  --app-color-chroma: 0.2;
+
+  /* computed colors - start */
+  --primary: oklch(
+    var(--app-color-lightness) var(--app-color-chroma) var(--app-color)
   );
+  --accent: oklch(
+    calc(var(--app-color-lightness) - 15%) calc(var(--app-color-chroma) * 0.3)
+      var(--app-color)
+  );
+  --overlay: oklch(
+    calc(var(--app-color-lightness) - 30%) calc(var(--app-color-chroma) * 0.3)
+      var(--app-color)
+  );
+  /* computed colors - end */
 
   --background: oklch(20.46% 0 0);
   --foreground: oklch(0.95 0.01 240);
-  --card: var(--dark-app-color);
+  --card: var(--overlay);
   --card-foreground: oklch(0.95 0.01 240);
-  --popover: var(--dark-app-color);
+  --popover: var(--overlay);
   --popover-foreground: oklch(0.95 0.01 240);
-  --primary: var(--app-color);
   --primary-foreground: oklch(0.95 0.01 240);
-  --secondary: oklch(32% 4% 285);
+  --secondary: var(--accent);
   --secondary-foreground: oklch(0.95 0.01 240);
-  --muted: oklch(32% 4% 285);
+  --muted: var(--accent);
   --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(32% 4% 285);
   --accent-foreground: oklch(0.95 0.01 240);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(32% 4% 285);
-  --input: oklch(32% 4% 285);
+  --border: var(--accent);
+  --input: var(--accent);
   --ring: var(--primary);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -48,7 +60,7 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
   --radius: 1rem;
 
-  --background-gradient-1: var(--app-color);
+  --background-gradient-1: var(--primary);
   --background-gradient-2: oklch(30.44% 0.0098 132.6);
   --background-gradient-3: oklch(31.87% 0.05 238.04);
 }
