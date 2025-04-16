@@ -1,5 +1,5 @@
 {
   "plugins": ["react-cosmos-plugin-vite"],
-  "globalImports": ["src/styles/global.css"],
+  "globalImports": ["src/styles/global.css", "src/__fixtures__/_fixture.css"],
   "exportPath": "docs"
 }
