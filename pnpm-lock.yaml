@@ -45,10 +45,10 @@ importers:
         specifier: ^0.477.0
         version: 0.477.0(react@18.3.1)
       react:
-        specifier: ^18.0.0
+        specifier: ^18.0.0 || ^19.0.0
         version: 18.3.1
       react-dom:
-        specifier: ^18.0.0
+        specifier: ^18.0.0 || ^19.0.0
         version: 18.3.1(react@18.3.1)
       tailwind-merge:
         specifier: ^3.2.0
