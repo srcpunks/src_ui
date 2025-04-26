@@ -1,3 +1,5 @@
+@import '../styles/global.css';
+
 :root {
   --app-color: 240;
 }

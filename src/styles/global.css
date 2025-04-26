@@ -6,11 +6,10 @@
 
 @theme {
   --radius-4xl: 1.8rem;
+  --app-color: 320;
 }
 
 :root {
-  --app-color: 320;
-
   --app-color-lightness: 50%;
   --app-color-chroma: 0.2;
 
