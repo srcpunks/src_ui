@@ -1,16 +1,19 @@
 import { Tabs, TabsTrigger, TabsList, TabsContent } from '@/components/ui/tabs'
+import { Card } from '@/components/ui/card.tsx'
 
 export default function TabsFixture() {
   return (
-    <div className="flex size-full justify-center pt-10">
-      <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="account">Tab1 Title</TabsTrigger>
-          <TabsTrigger value="password">Tab2 Title</TabsTrigger>
+    <Card title="Tabs Preview" description="Preview of the tabs component.">
+      <Tabs defaultValue="tab1" className="w-[400px]">
+        <TabsList>
+          <TabsTrigger value="tab1">Tab1 Title</TabsTrigger>
+          <TabsTrigger value="tab2">Tab2 Title</TabsTrigger>
+          <TabsTrigger value="tab3">Tab3 Title</TabsTrigger>
         </TabsList>
-        <TabsContent value="account">Tab1 Content</TabsContent>
-        <TabsContent value="password">Tab2 Content</TabsContent>
+        <TabsContent value="tab1">Tab1 Content</TabsContent>
+        <TabsContent value="tab2">Tab2 Content</TabsContent>
+        <TabsContent value="tab3">Tab3 Content</TabsContent>
       </Tabs>
-    </div>
+    </Card>
   )
 }
