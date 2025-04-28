@@ -1,14 +1,20 @@
-[data-slot='tabs-trigger-wrapper']:has(> [data-state='active']) {
-  @apply relative;
+[data-slot='tabs-trigger-wrapper'] {
+  &:has(> [data-state='active']) {
+    @apply relative;
 
-  &::before {
-    @apply bg-accent absolute bottom-0 h-2 w-full;
-    content: '';
-    bottom: -0.5rem;
+    &::before {
+      @apply bg-accent absolute bottom-0 -z-10 h-2 w-full;
+      content: '';
+      bottom: -0.5rem;
+    }
+
+    &:first-child [data-slot='tabs-trigger']::before {
+      @apply hidden;
+    }
   }
 
-  &:first-child [data-slot='tabs-trigger']::before {
-    @apply hidden;
+  &:last-child {
+    @apply mr-12;
   }
 }
 
@@ -18,10 +24,10 @@
   @apply [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
 
   &[data-state='active'] {
-    @apply bg-accent text-foreground rounded-b-none border-none shadow-sm;
+    @apply bg-accent text-foreground rounded-b-none border-none;
 
     &::before {
-      @apply absolute;
+      @apply absolute -z-10;
       content: '';
       bottom: -0.5rem;
       left: -2rem;
@@ -32,7 +38,7 @@
     }
 
     &::after {
-      @apply absolute;
+      @apply absolute -z-10;
       content: '';
       bottom: -0.5rem;
       right: -2rem;
