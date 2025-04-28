@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @import './fonts.css';
 
-@import './card.css';
-@import './tabs.css';
+@import '../components/ui/card.css';
+@import '../components/ui/tabs.css';
 
 @plugin "tailwindcss-animate";
 
