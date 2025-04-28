@@ -5,28 +5,57 @@ import {
   ComponentClass,
   FunctionComponent,
   isValidElement,
+  JSXElementConstructor,
+  ReactElement,
   ReactNode,
+  ReactPortal,
 } from 'react'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export type ReactChild =
+  | string
+  | number
+  | bigint
+  | ReactElement<unknown, string | JSXElementConstructor<unknown>>
+  | Iterable<ReactNode>
+  | ReactPortal
+  | Promise<unknown>
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FComponent = FunctionComponent<any>
+
+export function isChildOfType(
+  child: ReactChild,
+  componentType: FComponent,
+): boolean {
+  const componentName = componentType.name
+  if (!isValidElement(child)) return false
+
+  const childName =
+    (child.type as FunctionComponent).name ||
+    (child.type as ComponentClass).displayName ||
+    'Unknown'
+
+  return childName === componentName
+}
+
 export function hasComponentInChildren(
   children: ReactNode,
-  componentType: FunctionComponent,
+  componentType: FComponent,
 ): boolean {
-  const componentName = componentType.name // Extract component name
+  return Children.toArray(children).some((child: ReactChild) =>
+    isChildOfType(child, componentType),
+  )
+}
 
-  return Children.toArray(children).some((child) => {
-    if (!isValidElement(child)) return false
-
-    // Check both .name (for functional/class components) and displayName (for wrapped components)
-    const childName =
-      (child.type as FunctionComponent).name ||
-      (child.type as ComponentClass).displayName ||
-      'Unknown'
-
-    return childName === componentName
-  })
+export function getChildrenOfType(
+  children: ReactNode,
+  componentType: FComponent,
+): ReturnType<typeof Children.toArray> {
+  return Children.toArray(children).filter((child: ReactChild) =>
+    isChildOfType(child, componentType),
+  )
 }
