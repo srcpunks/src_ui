@@ -31,12 +31,12 @@ export function isChildOfType(
   child: ReactChild,
   componentType: FComponent,
 ): boolean {
-  const componentName = componentType.name
+  const componentName = componentType.displayName || componentType.name
   if (!isValidElement(child)) return false
 
   const childName =
+    (child.type as FunctionComponent).displayName ||
     (child.type as FunctionComponent).name ||
-    (child.type as ComponentClass).displayName ||
     'Unknown'
 
   return childName === componentName

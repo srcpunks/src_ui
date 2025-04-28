@@ -27,7 +27,15 @@ function TabsList({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List>) {
   const triggers = getChildrenOfType(props.children, TabsTrigger).map(
-    (child) => <div data-slot="tabs-trigger-wrapper">{child}</div>,
+    (child) => {
+      const typedChild =
+        child as React.ReactElement<TabsPrimitive.TabsTriggerProps>
+      return (
+        <div data-slot="tabs-trigger-wrapper" key={typedChild.key}>
+          {child}
+        </div>
+      )
+    },
   )
 
   return (
