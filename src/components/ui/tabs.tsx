@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 
 import { cn, getChildrenOfType } from '@/lib/utils'
+import CurvedWrapper from '../visuals/curved-wrapper'
 
 function Tabs({
   className,
@@ -13,11 +14,11 @@ function Tabs({
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
-      className={cn('flex flex-col gap-1', className)}
+      className={cn('flex flex-col', className)}
       {...props}
     >
       {triggerList}
-      <div>{contents}</div>
+      <div data-slot="tabs-content-wrapper">{contents}</div>
     </TabsPrimitive.Root>
   )
 }
@@ -39,14 +40,7 @@ function TabsList({
   )
 
   return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
-      className={cn(
-        'text-muted-foreground inline-flex h-9 w-fit items-center gap-2 rounded-lg',
-        className,
-      )}
-      {...props}
-    >
+    <TabsPrimitive.List data-slot="tabs-list" className={className} {...props}>
       {triggers}
     </TabsPrimitive.List>
   )
@@ -57,11 +51,13 @@ function TabsTrigger({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
-      className={className}
-      {...props}
-    />
+    <CurvedWrapper remSize={2.5} accent>
+      <TabsPrimitive.Trigger
+        data-slot="tabs-trigger"
+        className={className}
+        {...props}
+      />
+    </CurvedWrapper>
   )
 }
 
