@@ -96,7 +96,7 @@ function CardHeader({
 function CardTitlebar({ title, headerSecondary, className }: CardTitleProps) {
   return (
     <div data-slot="card-titlebar" className={cn('card-titlebar', className)}>
-      <CurvedWrapper remSize={4} noLeftEdge>
+      <CurvedWrapper remSize={3} noLeftEdge>
         <div className={cn('card-titlebar-title flex-auto')}>{title}</div>
       </CurvedWrapper>
       <div className={cn('card-titlebar-secondary')}>{headerSecondary}</div>
