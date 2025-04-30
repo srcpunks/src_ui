@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
+import CurvedWrapper from '../visuals/curved-wrapper'
 
 interface CardHeaderProps {
   title?: ReactNode
@@ -45,10 +46,12 @@ export function Card({
         data-slot="card-content"
         className={cn(
           'bg-card rounded-b-4xl border-x border-b px-6',
+          !title && 'rounded-tl-4xl',
+          !description && 'rounded-tr-4xl border-t',
           footerPrimary && 'rounded-br-none',
         )}
       >
-        <div className="bg-card relative z-[1] py-2">{children}</div>
+        <div className="bg-card relative z-[2] py-2">{children}</div>
       </div>
 
       <CardFooter
@@ -73,17 +76,19 @@ function CardHeader({
       {title && (
         <CardTitlebar title={title} headerSecondary={headerSecondary} />
       )}
-      <div
-        data-slot="card-description"
-        className={cn(
-          'bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pb-4 text-sm',
-          !title && 'rounded-tl-4xl',
-        )}
-      >
-        <div className="bg-card relative z-[1] size-full pt-3">
-          {description}
+      {description && (
+        <div
+          data-slot="card-description"
+          className={cn(
+            'bg-card rounded-tr-4xl border-x border-t px-6',
+            !title && 'rounded-tl-4xl',
+          )}
+        >
+          <div className="bg-card text-muted-foreground relative z-[1] py-3 text-sm">
+            {description}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
@@ -91,7 +96,9 @@ function CardHeader({
 function CardTitlebar({ title, headerSecondary, className }: CardTitleProps) {
   return (
     <div data-slot="card-titlebar" className={cn('card-titlebar', className)}>
-      <div className={cn('card-titlebar-title flex-auto')}>{title}</div>
+      <CurvedWrapper remSize={4} noLeftEdge>
+        <div className={cn('card-titlebar-title flex-auto')}>{title}</div>
+      </CurvedWrapper>
       <div className={cn('card-titlebar-secondary')}>{headerSecondary}</div>
     </div>
   )
@@ -115,7 +122,9 @@ function CardFooter({
         >
           <div className="card-footer-secondary">{footerSecondary}</div>
 
-          <div className="card-footer-primary">{footerPrimary}</div>
+          <CurvedWrapper remSize={4} noRightEdge inverted>
+            <div className="card-footer-primary">{footerPrimary}</div>
+          </CurvedWrapper>
         </div>
       )}
     </>

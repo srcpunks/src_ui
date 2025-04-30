@@ -5,29 +5,9 @@
   .card-titlebar-secondary {
     @apply relative flex h-14 items-center justify-center px-6 py-2.5;
 
-    &::before,
-    &::after {
-      @apply absolute;
-      content: '';
-      bottom: -1px;
-    }
-
     &.card-titlebar-title {
       @apply bg-card shrink-0 rounded-t-4xl border border-b-0;
-      @apply text-lg leading-none font-semibold;
-
-      &::before {
-        @apply z-[0];
-        right: -4rem;
-        height: 4rem;
-        width: 4rem;
-        border-bottom-left-radius: 2rem;
-        box-shadow: 0 2rem var(--card);
-      }
-
-      &::after {
-        @apply border-card w-full border-t;
-      }
+      @apply leading-none font-semibold;
     }
 
     &.card-titlebar-secondary {
@@ -35,16 +15,6 @@
 
       > * {
         @apply w-full;
-      }
-
-      &::before {
-        @apply z-[-1];
-        left: 0;
-        bottom: 0;
-        height: 4rem;
-        width: 4rem;
-        border-bottom-left-radius: 2rem;
-        box-shadow: 0 2rem var(--border);
       }
     }
   }
@@ -57,28 +27,8 @@
   .card-footer-secondary {
     @apply relative flex h-14 items-center justify-center px-6 py-2.5;
 
-    &::before,
-    &::after {
-      @apply absolute;
-      content: '';
-      top: -1px;
-    }
-
     &.card-footer-primary {
       @apply bg-card shrink-0 rounded-b-4xl border border-t-0;
-
-      &::before {
-        @apply z-[0];
-        left: -4rem;
-        height: 4rem;
-        width: 4rem;
-        border-top-right-radius: 2rem;
-        box-shadow: 0 -2rem var(--card);
-      }
-
-      &::after {
-        @apply border-card w-full border-t;
-      }
     }
 
     &.card-footer-secondary {
@@ -86,16 +36,6 @@
 
       > * {
         @apply w-full;
-      }
-
-      &::before {
-        @apply z-[-1];
-        right: 0;
-        top: 0;
-        height: 4rem;
-        width: 4rem;
-        border-top-right-radius: 2rem;
-        box-shadow: 0 -2rem var(--border);
       }
     }
   }
