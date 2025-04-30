@@ -4,12 +4,14 @@ interface CurvedEdgeProps {
   side: 'right' | 'left'
   remSize: number
   inverted?: boolean
+  accent?: boolean
 }
 
 export default function CurvedEdge({
   side,
   remSize,
   inverted,
+  accent,
 }: CurvedEdgeProps): React.ReactElement {
   const sizeHalf = remSize / 2
   const baseStyle: React.CSSProperties = {
@@ -33,7 +35,7 @@ export default function CurvedEdge({
     top: inverted ? '-1px' : undefined,
     right: side === 'right' ? `1px` : undefined,
     left: side === 'left' ? `1px` : undefined,
-    boxShadow: `0 ${inverted ? sizeHalf * -1 : sizeHalf}rem var(--card)`,
+    boxShadow: `0 ${inverted ? sizeHalf * -1 : sizeHalf}rem var(${accent ? '--accent' : '--card'})`,
   }
 
   const bgStyle: React.CSSProperties = {

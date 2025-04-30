@@ -15,4 +15,8 @@
     right: 1px;
     top: -1px;
   }
+
+  &[data-accent='true']::before {
+    @apply border-accent;
+  }
 }

@@ -7,6 +7,7 @@ interface CurvedWrapperProps {
   noRightEdge?: boolean
   inverted?: boolean
   children?: ReactNode
+  accent?: boolean
 }
 
 export default function CurvedWrapper({
@@ -15,15 +16,30 @@ export default function CurvedWrapper({
   noRightEdge,
   inverted,
   children,
+  accent,
 }: CurvedWrapperProps): React.ReactElement {
   return (
-    <div data-slot="curved-wrapper" data-inverted={inverted}>
+    <div
+      data-slot="curved-wrapper"
+      data-inverted={inverted}
+      data-accent={accent}
+    >
       {!noLeftEdge && (
-        <CurvedEdge side="left" remSize={remSize} inverted={inverted} />
+        <CurvedEdge
+          side="left"
+          remSize={remSize}
+          inverted={inverted}
+          accent={accent}
+        />
       )}
       {children}
       {!noRightEdge && (
-        <CurvedEdge side="right" remSize={remSize} inverted={inverted} />
+        <CurvedEdge
+          side="right"
+          remSize={remSize}
+          inverted={inverted}
+          accent={accent}
+        />
       )}
     </div>
   )
