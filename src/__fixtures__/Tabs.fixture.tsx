@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card.tsx'
 export default function TabsFixture() {
   return (
     <Card title="Tabs Preview" description="Preview of the tabs component.">
-      <Tabs defaultValue="tab1" className="min-[400px]">
+      <Tabs defaultValue="tab1" className="min-w-[400px]">
         <TabsList>
           <TabsTrigger value="tab1">first</TabsTrigger>
           <TabsTrigger value="tab2">second tab</TabsTrigger>
