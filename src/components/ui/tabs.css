@@ -1,16 +1,27 @@
+[data-slot='tabs-list'] {
+  @apply inline-flex w-fit items-center gap-2 rounded-lg;
+}
+
 [data-slot='tabs-trigger-wrapper'] {
-  &:has(> [data-state='active']) {
-    @apply relative;
+  [data-slot='curved-wrapper'] {
+    @apply h-8;
 
-    &::before {
-      @apply bg-accent absolute bottom-0 -z-1 h-2 w-full;
-      content: '';
-      bottom: -0.5rem;
+    &:not(:has(> [data-state='active'])) {
+      &::before,
+      [data-slot*='curved-edge'] {
+        display: none;
+      }
     }
+  }
 
-    &:first-child [data-slot='tabs-trigger']::before {
+  &:has([data-state='active']) {
+    &:first-child [data-slot='curved-wrapper'] [data-slot='left-curved-edge'] {
       @apply hidden;
     }
+  }
+
+  &:has([data-state='inactive']) [data-slot='curved-wrapper'] {
+    @apply h-7;
   }
 
   &:last-child {
@@ -19,38 +30,16 @@
 }
 
 [data-slot='tabs-trigger'] {
-  @apply border-accent inline-flex w-fit items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-sm font-medium whitespace-nowrap;
+  @apply border-accent inline-flex h-full w-fit items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-sm font-medium whitespace-nowrap;
   @apply transition-[color,box-shadow];
   @apply [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
 
   &[data-state='active'] {
-    @apply bg-accent text-foreground rounded-b-none border-none;
-
-    &::before {
-      @apply absolute -z-1;
-      content: '';
-      bottom: -0.5rem;
-      left: -2rem;
-      height: 2rem;
-      width: 2rem;
-      border-bottom-right-radius: 1rem;
-      box-shadow: 0 1rem var(--accent);
-    }
-
-    &::after {
-      @apply absolute -z-1;
-      content: '';
-      bottom: -0.5rem;
-      right: -2rem;
-      height: 2rem;
-      width: 2rem;
-      border-bottom-left-radius: 1rem;
-      box-shadow: 0 1rem var(--accent);
-    }
+    @apply bg-accent text-foreground rounded-b-none;
   }
 
   &[data-state='inactive'] {
-    @apply cursor-pointer;
+    @apply relative z-2 cursor-pointer;
   }
 
   &:focus-visible {
@@ -62,10 +51,17 @@
   }
 }
 
-[data-slot='tabs-content'] {
-  @apply bg-accent flex-1 rounded-2xl p-4 outline-none;
+[data-slot='tabs-content-wrapper'] {
+  @apply bg-accent flex-1 rounded-2xl outline-none;
 
-  &:first-child[data-state='active'] {
-    @apply rounded-tl-none;
+  &:has(:first-child[data-state='active']) {
+    &,
+    [data-slot='tabs-content'] {
+      @apply rounded-tl-none;
+    }
   }
+}
+
+[data-slot='tabs-content'] {
+  @apply bg-accent relative z-1 rounded-2xl p-4;
 }
