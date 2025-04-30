@@ -1,0 +1,18 @@
+[data-slot='curved-wrapper'] {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: '';
+    left: 1px;
+    bottom: -1px;
+    @apply border-card w-full border-t;
+  }
+
+  &[data-inverted='true']::before {
+    left: initial;
+    bottom: initial;
+    right: 1px;
+    top: -1px;
+  }
+}

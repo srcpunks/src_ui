@@ -1,0 +1,42 @@
+.card-titlebar {
+  @apply relative flex items-center;
+
+  .card-titlebar-title,
+  .card-titlebar-secondary {
+    @apply relative flex h-14 items-center justify-center px-6 py-2.5;
+
+    &.card-titlebar-title {
+      @apply bg-card shrink-0 rounded-t-4xl border border-b-0;
+      @apply leading-none font-semibold;
+    }
+
+    &.card-titlebar-secondary {
+      @apply min-w-25 flex-auto basis-2/4;
+
+      > * {
+        @apply w-full;
+      }
+    }
+  }
+}
+
+.card-footer {
+  @apply relative flex items-center;
+
+  .card-footer-primary,
+  .card-footer-secondary {
+    @apply relative flex h-14 items-center justify-center px-6 py-2.5;
+
+    &.card-footer-primary {
+      @apply bg-card shrink-0 rounded-b-4xl border border-t-0;
+    }
+
+    &.card-footer-secondary {
+      @apply min-w-25 flex-auto basis-2/4;
+
+      > * {
+        @apply w-full;
+      }
+    }
+  }
+}

@@ -2,36 +2,37 @@ import * as React from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 
 import { cn, getChildrenOfType } from '@/lib/utils'
+import CurvedWrapper from '../visuals/curved-wrapper'
 
-function Tabs({
+function Tabcard({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  const triggerList = getChildrenOfType(props.children, TabsList)
-  const contents = getChildrenOfType(props.children, TabsContent)
+  const triggerList = getChildrenOfType(props.children, TabcardList)
+  const contents = getChildrenOfType(props.children, TabcardContent)
 
   return (
     <TabsPrimitive.Root
-      data-slot="tabs"
-      className={cn('flex flex-col gap-1', className)}
+      data-slot="tabcard"
+      className={cn('flex flex-col', className)}
       {...props}
     >
       {triggerList}
-      <div>{contents}</div>
+      <div data-slot="tabcard-content-wrapper">{contents}</div>
     </TabsPrimitive.Root>
   )
 }
 
-function TabsList({
+function TabcardList({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List>) {
-  const triggers = getChildrenOfType(props.children, TabsTrigger).map(
+  const triggers = getChildrenOfType(props.children, TabcardTrigger).map(
     (child) => {
       const typedChild =
         child as React.ReactElement<TabsPrimitive.TabsTriggerProps>
       return (
-        <div data-slot="tabs-trigger-wrapper" key={typedChild.key}>
+        <div data-slot="tabcard-trigger-wrapper" key={typedChild.key}>
           {child}
         </div>
       )
@@ -40,11 +41,8 @@ function TabsList({
 
   return (
     <TabsPrimitive.List
-      data-slot="tabs-list"
-      className={cn(
-        'text-muted-foreground inline-flex h-9 w-fit items-center gap-2 rounded-lg',
-        className,
-      )}
+      data-slot="tabcard-list"
+      className={className}
       {...props}
     >
       {triggers}
@@ -52,30 +50,32 @@ function TabsList({
   )
 }
 
-function TabsTrigger({
+function TabcardTrigger({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
-      className={className}
-      {...props}
-    />
+    <CurvedWrapper remSize={2}>
+      <TabsPrimitive.Trigger
+        data-slot="tabcard-trigger"
+        className={className}
+        {...props}
+      />
+    </CurvedWrapper>
   )
 }
 
-function TabsContent({
+function TabcardContent({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
   return (
     <TabsPrimitive.Content
-      data-slot="tabs-content"
+      data-slot="tabcard-content"
       className={className}
       {...props}
     />
   )
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabcard, TabcardList, TabcardTrigger, TabcardContent }

@@ -3,7 +3,7 @@
     @apply relative;
 
     &::before {
-      @apply bg-accent absolute bottom-0 -z-10 h-2 w-full;
+      @apply bg-accent absolute bottom-0 -z-1 h-2 w-full;
       content: '';
       bottom: -0.5rem;
     }
@@ -27,7 +27,7 @@
     @apply bg-accent text-foreground rounded-b-none border-none;
 
     &::before {
-      @apply absolute -z-10;
+      @apply absolute -z-1;
       content: '';
       bottom: -0.5rem;
       left: -2rem;
@@ -38,7 +38,7 @@
     }
 
     &::after {
-      @apply absolute -z-10;
+      @apply absolute -z-1;
       content: '';
       bottom: -0.5rem;
       right: -2rem;
