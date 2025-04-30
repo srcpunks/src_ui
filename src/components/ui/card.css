@@ -3,7 +3,7 @@
 
   .card-titlebar-title,
   .card-titlebar-secondary {
-    @apply relative flex h-14 items-center justify-center px-6 py-2.5;
+    @apply relative flex h-12 items-center justify-center px-4;
 
     &.card-titlebar-title {
       @apply bg-card shrink-0 rounded-t-4xl border border-b-0;
@@ -25,7 +25,7 @@
 
   .card-footer-primary,
   .card-footer-secondary {
-    @apply relative flex h-14 items-center justify-center px-6 py-2.5;
+    @apply relative flex h-14 items-center justify-center px-4;
 
     &.card-footer-primary {
       @apply bg-card shrink-0 rounded-b-4xl border border-t-0;

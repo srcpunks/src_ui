@@ -12,6 +12,9 @@ export default function TabCardFixture() {
         <TabcardTrigger value="tab1">first</TabcardTrigger>
         <TabcardTrigger value="tab2">second tab</TabcardTrigger>
         <TabcardTrigger value="tab3">3rd</TabcardTrigger>
+        <TabcardTrigger value="none" disabled>
+          disabled
+        </TabcardTrigger>
         <TabcardTrigger value="tab4">after 3 comes 4</TabcardTrigger>
       </TabcardList>
       <TabcardContent value="tab1">Tab1 Content</TabcardContent>
