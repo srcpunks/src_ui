@@ -1,0 +1,73 @@
+[data-slot='tabcard'] {
+  [data-slot='tabs-list'] {
+    @apply h-fit;
+  }
+}
+
+[data-slot='tabcard-list'] {
+  @apply text-muted-foreground inline-flex w-fit items-center gap-2 rounded-lg;
+}
+
+[data-slot='tabcard-trigger-wrapper'] {
+  [data-slot='curved-wrapper'] {
+    @apply h-10;
+
+    &:not(:has(> [data-state='active'])) {
+      &::before,
+      [data-slot*='curved-edge'] {
+        display: none;
+      }
+    }
+  }
+
+  &:has([data-state='active']) {
+    &:first-child [data-slot='curved-wrapper'] [data-slot='left-curved-edge'] {
+      @apply hidden;
+    }
+  }
+
+  &:has([data-state='inactive']) [data-slot='curved-wrapper'] {
+    @apply h-8;
+  }
+
+  &:last-child {
+    @apply mr-12;
+  }
+}
+
+[data-slot='tabcard-trigger'] {
+  @apply border-accent inline-flex h-full w-fit items-center justify-center gap-1.5 rounded-4xl border border-t px-6 text-sm font-medium whitespace-nowrap;
+  @apply transition-[color,box-shadow];
+  @apply [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
+
+  &[data-state='active'] {
+    @apply bg-card text-foreground border-accent relative rounded-b-none border-b-0;
+  }
+
+  &[data-state='inactive'] {
+    @apply relative z-2 cursor-pointer;
+  }
+
+  &:focus-visible {
+    @apply border-ring ring-ring/50 outline-ring ring-[3px] outline-1;
+  }
+
+  &:disabled {
+    @apply pointer-events-none opacity-50;
+  }
+}
+
+[data-slot='tabcard-content-wrapper'] {
+  @apply border-accent rounded-2xl border outline-none;
+
+  &:has(:first-child[data-state='active']) {
+    &,
+    [data-slot='tabcard-content'] {
+      @apply rounded-tl-none;
+    }
+  }
+}
+
+[data-slot='tabcard-content'] {
+  @apply bg-card border-accent relative z-1 rounded-2xl p-4;
+}
