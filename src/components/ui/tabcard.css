@@ -5,7 +5,7 @@
 }
 
 [data-slot='tabcard-list'] {
-  @apply text-muted-foreground inline-flex w-fit items-center gap-2 rounded-lg;
+  @apply inline-flex w-fit items-center gap-2 rounded-lg;
 }
 
 [data-slot='tabcard-trigger-wrapper'] {
@@ -53,7 +53,7 @@
   }
 
   &:disabled {
-    @apply pointer-events-none opacity-50;
+    @apply pointer-events-none opacity-40;
   }
 }
 
