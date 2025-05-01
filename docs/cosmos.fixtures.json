@@ -82,6 +82,14 @@
       "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FSkeleton.fixture.tsx%22%7D&locked=true"
     },
     {
+      "filePath": "src/__fixtures__/Tabcard.fixture.tsx",
+      "cleanPath": [
+        "src",
+        "Tabcard"
+      ],
+      "rendererUrl": "renderer.html?fixtureId=%7B%22path%22%3A%22src%2F__fixtures__%2FTabcard.fixture.tsx%22%7D&locked=true"
+    },
+    {
       "filePath": "src/__fixtures__/Tabs.fixture.tsx",
       "cleanPath": [
         "src",
