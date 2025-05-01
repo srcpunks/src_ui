@@ -1,4 +1,4 @@
-import { u as useFixtureState, e as extendWithValue, R as React, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React$1 } from "./index-Bza_mDgs.js";
+import { u as useFixtureState, e as extendWithValue, R as React2, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React } from "./index-ROFSqfqT.js";
 function useCurrentInputValue(inputName, defaultValue) {
   const [fixtureState] = useFixtureState("inputs");
   const inputFs = fixtureState && fixtureState[inputName];
@@ -10,7 +10,7 @@ function useCurrentInputValue(inputName, defaultValue) {
 }
 function useInputFixtureState(inputName, defaultValue) {
   const [, setFixtureState] = useFixtureState("inputs");
-  React.useEffect(() => {
+  React2.useEffect(() => {
     setFixtureState((prevFs) => {
       const inputFs = prevFs && prevFs[inputName];
       if (inputFs && inputFs.type === "standard" && fsValueExtendsBaseValue(inputFs.defaultValue, defaultValue))
@@ -31,7 +31,7 @@ function fsValueExtendsBaseValue(fsValue, baseValue) {
 }
 function useSetInputValue(inputName, defaultValue) {
   const [, setFixtureState] = useFixtureState("inputs");
-  return React.useCallback((stateChange) => {
+  return React2.useCallback((stateChange) => {
     setFixtureState((prevFs) => {
       function getNewState() {
         if (typeof stateChange !== "function")
@@ -400,6 +400,7 @@ var NODES = [
   "nav",
   "ol",
   "p",
+  "select",
   "span",
   "svg",
   "ul"
@@ -645,7 +646,7 @@ function handleAndDispatchCustomEvent(name, handler, detail, { discrete }) {
 }
 var useLayoutEffect2 = (globalThis == null ? void 0 : globalThis.document) ? reactExports.useLayoutEffect : () => {
 };
-var useReactId = React$1[" useId ".trim().toString()] || (() => void 0);
+var useReactId = React[" useId ".trim().toString()] || (() => void 0);
 var count$1 = 0;
 function useId(deterministicId) {
   const [id, setId] = reactExports.useState(useReactId());
@@ -2844,7 +2845,7 @@ var Presence = (props) => {
 Presence.displayName = "Presence";
 function usePresence(present) {
   const [node, setNode] = reactExports.useState();
-  const stylesRef = reactExports.useRef({});
+  const stylesRef = reactExports.useRef(null);
   const prevPresentRef = reactExports.useRef(present);
   const prevAnimationNameRef = reactExports.useRef("none");
   const initialState = present ? "mounted" : "unmounted";
@@ -2928,7 +2929,7 @@ function usePresence(present) {
   return {
     isPresent: ["mounted", "unmountSuspended"].includes(state),
     ref: reactExports.useCallback((node2) => {
-      if (node2) stylesRef.current = getComputedStyle(node2);
+      stylesRef.current = node2 ? getComputedStyle(node2) : null;
       setNode(node2);
     }, [])
   };
@@ -2950,27 +2951,47 @@ function getElementRef(element) {
   }
   return element.props.ref || element.ref;
 }
+var useInsertionEffect = React[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
 function useControllableState({
   prop,
   defaultProp,
   onChange = () => {
-  }
+  },
+  caller
 }) {
-  const [uncontrolledProp, setUncontrolledProp] = useUncontrolledState({ defaultProp, onChange });
+  const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState({
+    defaultProp,
+    onChange
+  });
   const isControlled = prop !== void 0;
   const value = isControlled ? prop : uncontrolledProp;
-  const handleChange = useCallbackRef$1(onChange);
+  {
+    const isControlledRef = reactExports.useRef(prop !== void 0);
+    reactExports.useEffect(() => {
+      const wasControlled = isControlledRef.current;
+      if (wasControlled !== isControlled) {
+        const from = wasControlled ? "controlled" : "uncontrolled";
+        const to = isControlled ? "controlled" : "uncontrolled";
+        console.warn(
+          `${caller} is changing from ${from} to ${to}. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component.`
+        );
+      }
+      isControlledRef.current = isControlled;
+    }, [isControlled, caller]);
+  }
   const setValue = reactExports.useCallback(
     (nextValue) => {
+      var _a;
       if (isControlled) {
-        const setter = nextValue;
-        const value2 = typeof nextValue === "function" ? setter(prop) : nextValue;
-        if (value2 !== prop) handleChange(value2);
+        const value2 = isFunction(nextValue) ? nextValue(prop) : nextValue;
+        if (value2 !== prop) {
+          (_a = onChangeRef.current) == null ? void 0 : _a.call(onChangeRef, value2);
+        }
       } else {
         setUncontrolledProp(nextValue);
       }
     },
-    [isControlled, prop, setUncontrolledProp, handleChange]
+    [isControlled, prop, setUncontrolledProp, onChangeRef]
   );
   return [value, setValue];
 }
@@ -2978,18 +2999,37 @@ function useUncontrolledState({
   defaultProp,
   onChange
 }) {
-  const uncontrolledState = reactExports.useState(defaultProp);
-  const [value] = uncontrolledState;
+  const [value, setValue] = reactExports.useState(defaultProp);
   const prevValueRef = reactExports.useRef(value);
-  const handleChange = useCallbackRef$1(onChange);
+  const onChangeRef = reactExports.useRef(onChange);
+  useInsertionEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
   reactExports.useEffect(() => {
+    var _a;
     if (prevValueRef.current !== value) {
-      handleChange(value);
+      (_a = onChangeRef.current) == null ? void 0 : _a.call(onChangeRef, value);
       prevValueRef.current = value;
     }
-  }, [value, prevValueRef, handleChange]);
-  return uncontrolledState;
+  }, [value, prevValueRef]);
+  return [value, setValue, onChangeRef];
 }
+function isFunction(value) {
+  return typeof value === "function";
+}
+var VISUALLY_HIDDEN_STYLES = Object.freeze({
+  // See: https://github.com/twbs/bootstrap/blob/main/scss/mixins/_visually-hidden.scss
+  position: "absolute",
+  border: 0,
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  wordWrap: "normal"
+});
 var NAME$2 = "VisuallyHidden";
 var VisuallyHidden = reactExports.forwardRef(
   (props, forwardedRef) => {
@@ -2998,20 +3038,7 @@ var VisuallyHidden = reactExports.forwardRef(
       {
         ...props,
         ref: forwardedRef,
-        style: {
-          // See: https://github.com/twbs/bootstrap/blob/main/scss/mixins/_visually-hidden.scss
-          position: "absolute",
-          border: 0,
-          width: 1,
-          height: 1,
-          padding: 0,
-          margin: -1,
-          overflow: "hidden",
-          clip: "rect(0, 0, 0, 0)",
-          whiteSpace: "nowrap",
-          wordWrap: "normal",
-          ...props.style
-        }
+        style: { ...VISUALLY_HIDDEN_STYLES, ...props.style }
       }
     );
   }
@@ -3075,7 +3102,7 @@ var Tooltip$1 = (props) => {
     __scopeTooltip,
     children,
     open: openProp,
-    defaultOpen = false,
+    defaultOpen,
     onOpenChange,
     disableHoverableContent: disableHoverableContentProp,
     delayDuration: delayDurationProp
@@ -3088,9 +3115,9 @@ var Tooltip$1 = (props) => {
   const disableHoverableContent = disableHoverableContentProp ?? providerContext.disableHoverableContent;
   const delayDuration = delayDurationProp ?? providerContext.delayDuration;
   const wasOpenDelayedRef = reactExports.useRef(false);
-  const [open = false, setOpen] = useControllableState({
+  const [open, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpen,
+    defaultProp: defaultOpen ?? false,
     onChange: (open2) => {
       if (open2) {
         providerContext.onOpen();
@@ -3099,7 +3126,8 @@ var Tooltip$1 = (props) => {
         providerContext.onClose();
       }
       onOpenChange == null ? void 0 : onOpenChange(open2);
-    }
+    },
+    caller: TOOLTIP_NAME
   });
   const stateAttribute = reactExports.useMemo(() => {
     return open ? wasOpenDelayedRef.current ? "delayed-open" : "instant-open" : "closed";
@@ -3431,10 +3459,12 @@ function isPointInPolygon(point, polygon) {
   const { x, y } = point;
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const xi = polygon[i].x;
-    const yi = polygon[i].y;
-    const xj = polygon[j].x;
-    const yj = polygon[j].y;
+    const ii = polygon[i];
+    const jj = polygon[j];
+    const xi = ii.x;
+    const yi = ii.y;
+    const xj = jj.x;
+    const yj = jj.y;
     const intersect = yi > y !== yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi;
     if (intersect) inside = !inside;
   }
@@ -6457,6 +6487,17 @@ const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
+function isChildOfType(child, componentType) {
+  const componentName = componentType.displayName || componentType.name;
+  if (!reactExports.isValidElement(child)) return false;
+  const childName = child.type.displayName || child.type.name || "Unknown";
+  return childName === componentName;
+}
+function getChildrenOfType(children, componentType) {
+  return reactExports.Children.toArray(children).filter(
+    (child) => isChildOfType(child, componentType)
+  );
+}
 function TooltipProvider({
   delayDuration = 0,
   ...props
@@ -6624,14 +6665,14 @@ function createCollection(name) {
   );
   const CollectionProvider = (props) => {
     const { scope, children } = props;
-    const ref = React.useRef(null);
-    const itemMap = React.useRef(/* @__PURE__ */ new Map()).current;
+    const ref = React2.useRef(null);
+    const itemMap = React2.useRef(/* @__PURE__ */ new Map()).current;
     return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionProviderImpl, { scope, itemMap, collectionRef: ref, children });
   };
   CollectionProvider.displayName = PROVIDER_NAME2;
   const COLLECTION_SLOT_NAME = name + "CollectionSlot";
   const CollectionSlotImpl = /* @__PURE__ */ createSlot(COLLECTION_SLOT_NAME);
-  const CollectionSlot = React.forwardRef(
+  const CollectionSlot = React2.forwardRef(
     (props, forwardedRef) => {
       const { scope, children } = props;
       const context = useCollectionContext(COLLECTION_SLOT_NAME, scope);
@@ -6643,13 +6684,13 @@ function createCollection(name) {
   const ITEM_SLOT_NAME = name + "CollectionItemSlot";
   const ITEM_DATA_ATTR = "data-radix-collection-item";
   const CollectionItemSlotImpl = /* @__PURE__ */ createSlot(ITEM_SLOT_NAME);
-  const CollectionItemSlot = React.forwardRef(
+  const CollectionItemSlot = React2.forwardRef(
     (props, forwardedRef) => {
       const { scope, children, ...itemData } = props;
-      const ref = React.useRef(null);
+      const ref = React2.useRef(null);
       const composedRefs = useComposedRefs(forwardedRef, ref);
       const context = useCollectionContext(ITEM_SLOT_NAME, scope);
-      React.useEffect(() => {
+      React2.useEffect(() => {
         context.itemMap.set(ref, { ref, ...itemData });
         return () => void context.itemMap.delete(ref);
       });
@@ -6659,7 +6700,7 @@ function createCollection(name) {
   CollectionItemSlot.displayName = ITEM_SLOT_NAME;
   function useCollection2(scope) {
     const context = useCollectionContext(name + "CollectionConsumer", scope);
-    const getItems = React.useCallback(() => {
+    const getItems = React2.useCallback(() => {
       const collectionNode = context.collectionRef.current;
       if (!collectionNode) return [];
       const orderedNodes = Array.from(collectionNode.querySelectorAll(`[${ITEM_DATA_ATTR}]`));
@@ -6713,10 +6754,11 @@ var RovingFocusGroupImpl = reactExports.forwardRef((props, forwardedRef) => {
   const ref = reactExports.useRef(null);
   const composedRefs = useComposedRefs(forwardedRef, ref);
   const direction = useDirection(dir);
-  const [currentTabStopId = null, setCurrentTabStopId] = useControllableState({
+  const [currentTabStopId, setCurrentTabStopId] = useControllableState({
     prop: currentTabStopIdProp,
-    defaultProp: defaultCurrentTabStopId,
-    onChange: onCurrentTabStopIdChange
+    defaultProp: defaultCurrentTabStopId ?? null,
+    onChange: onCurrentTabStopIdChange,
+    caller: GROUP_NAME$1
   });
   const [isTabbingBackOut, setIsTabbingBackOut] = reactExports.useState(false);
   const handleEntryFocus = useCallbackRef$1(onEntryFocus);
@@ -6794,6 +6836,7 @@ var RovingFocusGroupItem = reactExports.forwardRef(
       focusable = true,
       active = false,
       tabStopId,
+      children,
       ...itemProps
     } = props;
     const autoId = useId();
@@ -6801,7 +6844,7 @@ var RovingFocusGroupItem = reactExports.forwardRef(
     const context = useRovingFocusContext(ITEM_NAME$1, __scopeRovingFocusGroup);
     const isCurrentTabStop = context.currentTabStopId === id;
     const getItems = useCollection$1(__scopeRovingFocusGroup);
-    const { onFocusableItemAdd, onFocusableItemRemove } = context;
+    const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
     reactExports.useEffect(() => {
       if (focusable) {
         onFocusableItemAdd();
@@ -6847,7 +6890,8 @@ var RovingFocusGroupItem = reactExports.forwardRef(
                 }
                 setTimeout(() => focusFirst$1(candidateNodes));
               }
-            })
+            }),
+            children: typeof children === "function" ? children({ isCurrentTabStop, hasTabStop: currentTabStopId != null }) : children
           }
         )
       }
@@ -6910,7 +6954,8 @@ var Tabs$1 = reactExports.forwardRef(
     const [value, setValue] = useControllableState({
       prop: valueProp,
       onChange: onValueChange,
-      defaultProp: defaultValue
+      defaultProp: defaultValue ?? "",
+      caller: TABS_NAME
     });
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
       TabsProvider,
@@ -7061,16 +7106,96 @@ var Root2$1 = Tabs$1;
 var List = TabsList$1;
 var Trigger$2 = TabsTrigger$1;
 var Content$1 = TabsContent$1;
+function CurvedEdge({
+  side,
+  remSize,
+  inverted,
+  accent
+}) {
+  const sizeHalf = remSize / 2;
+  const baseStyle = {
+    position: "absolute",
+    height: `${remSize}rem`,
+    width: `${remSize}rem`,
+    borderBottomLeftRadius: !inverted && side === "right" ? `${sizeHalf}rem` : void 0,
+    borderBottomRightRadius: !inverted && side === "left" ? `${sizeHalf}rem` : void 0,
+    borderTopLeftRadius: inverted && side === "right" ? `${sizeHalf}rem` : void 0,
+    borderTopRightRadius: inverted && side === "left" ? `${sizeHalf}rem` : void 0
+  };
+  const fgStyle = {
+    ...baseStyle,
+    zIndex: 2,
+    bottom: !inverted ? "-1px" : void 0,
+    top: inverted ? "-1px" : void 0,
+    right: side === "right" ? `1px` : void 0,
+    left: side === "left" ? `1px` : void 0,
+    boxShadow: `0 ${inverted ? sizeHalf * -1 : sizeHalf}rem var(${accent ? "--accent" : "--card"})`
+  };
+  const bgStyle = {
+    ...baseStyle,
+    zIndex: 1,
+    bottom: !inverted ? 0 : void 0,
+    top: inverted ? 0 : void 0,
+    right: side === "right" ? `${remSize * -1}rem` : void 0,
+    left: side === "left" ? `${remSize * -1}rem` : void 0,
+    boxShadow: `0 ${inverted ? sizeHalf * -1 : sizeHalf}rem var(--border)`
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: bgStyle, "data-slot": `${side}-curved-edge`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: fgStyle }) });
+}
+function CurvedWrapper({
+  remSize,
+  noLeftEdge,
+  noRightEdge,
+  inverted,
+  children,
+  accent
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      "data-slot": "curved-wrapper",
+      "data-inverted": inverted,
+      "data-accent": accent,
+      children: [
+        !noLeftEdge && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CurvedEdge,
+          {
+            side: "left",
+            remSize,
+            inverted,
+            accent
+          }
+        ),
+        children,
+        !noRightEdge && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CurvedEdge,
+          {
+            side: "right",
+            remSize,
+            inverted,
+            accent
+          }
+        )
+      ]
+    }
+  );
+}
 function Tabs({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+  const triggerList = getChildrenOfType(props.children, TabsList);
+  const contents = getChildrenOfType(props.children, TabsContent);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     Root2$1,
     {
       "data-slot": "tabs",
-      className: cn("flex flex-col gap-2", className),
-      ...props
+      className: cn("flex flex-col", className),
+      ...props,
+      children: [
+        triggerList,
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-slot": "tabs-content-wrapper", children: contents })
+      ]
     }
   );
 }
@@ -7078,33 +7203,26 @@ function TabsList({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    List,
-    {
-      "data-slot": "tabs-list",
-      className: cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-1",
-        className
-      ),
-      ...props
+  const triggers = getChildrenOfType(props.children, TabsTrigger).map(
+    (child) => {
+      const typedChild = child;
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-slot": "tabs-trigger-wrapper", children: child }, typedChild.key);
     }
   );
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(List, { "data-slot": "tabs-list", className, ...props, children: triggers });
 }
 function TabsTrigger({
   className,
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(CurvedWrapper, { remSize: 2.5, accent: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
     Trigger$2,
     {
       "data-slot": "tabs-trigger",
-      className: cn(
-        "data-[state=active]:bg-background data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm data-[state=inactive]:cursor-pointer [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
-      ),
+      className,
       ...props
     }
-  );
+  ) });
 }
 function TabsContent({
   className,
@@ -7114,24 +7232,214 @@ function TabsContent({
     Content$1,
     {
       "data-slot": "tabs-content",
-      className: cn("flex-1 outline-none", className),
+      className,
       ...props
     }
   );
 }
+function Card({
+  title,
+  headerSecondary,
+  description,
+  footerPrimary,
+  footerSecondary,
+  className,
+  children
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      "data-slot": "card",
+      className: cn("text-card-foreground flex flex-col", className),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CardHeader,
+          {
+            title,
+            headerSecondary,
+            description
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            "data-slot": "card-content",
+            className: cn(
+              "bg-card rounded-b-4xl border-x border-b px-6",
+              !title && "rounded-tl-4xl",
+              !description && "rounded-tr-4xl border-t",
+              footerPrimary && "rounded-br-none"
+            ),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-card relative z-[2] py-2", children })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CardFooter,
+          {
+            footerPrimary,
+            footerSecondary
+          }
+        )
+      ]
+    }
+  );
+}
+function CardHeader({
+  title,
+  headerSecondary,
+  description,
+  className
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      "data-slot": "card-header",
+      className: cn("flex min-h-6 flex-col", className),
+      children: [
+        title && /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitlebar, { title, headerSecondary }),
+        description && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            "data-slot": "card-description",
+            className: cn(
+              "bg-card rounded-tr-4xl border-x border-t px-6",
+              !title && "rounded-tl-4xl"
+            ),
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-card text-muted-foreground relative z-[1] py-3 text-sm", children: description })
+          }
+        )
+      ]
+    }
+  );
+}
+function CardTitlebar({ title, headerSecondary, className }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { "data-slot": "card-titlebar", className: cn("card-titlebar", className), children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CurvedWrapper, { remSize: 3, noLeftEdge: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("card-titlebar-title flex-auto"), children: title }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("card-titlebar-secondary"), children: headerSecondary })
+  ] });
+}
+function CardFooter({
+  footerPrimary,
+  footerSecondary,
+  className
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: footerPrimary && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      "data-slot": "card-footer",
+      className: cn(
+        "card-footer",
+        !footerPrimary && "bg-card rounded-b-4xl border border-t-0",
+        className
+      ),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-footer-secondary", children: footerSecondary }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(CurvedWrapper, { remSize: 4, noRightEdge: true, inverted: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-footer-primary", children: footerPrimary }) })
+      ]
+    }
+  ) });
+}
 function TabsFixture() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex size-full justify-center pt-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Tabs, { defaultValue: "account", className: "w-[400px]", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(TabsList, { className: "grid w-full grid-cols-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "account", children: "Tab1 Title" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "password", children: "Tab2 Title" })
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { title: "Tabs Preview", description: "Preview of the tabs component.", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Tabs, { defaultValue: "tab1", className: "min-w-[400px]", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(TabsList, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "tab1", children: "first" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "tab2", children: "second tab" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "tab3", children: "3rd" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabsTrigger, { value: "tab4", children: "after 3 comes 4" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "account", children: "Tab1 Content" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "password", children: "Tab2 Content" })
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "tab1", children: "Tab1 Content" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "tab2", children: "Tab2 Content" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "tab3", children: "Tab3 Content" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabsContent, { value: "tab4", children: "Tab4 Content" })
   ] }) });
 }
 const fixture2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: TabsFixture
+}, Symbol.toStringTag, { value: "Module" }));
+function Tabcard({
+  className,
+  ...props
+}) {
+  const triggerList = getChildrenOfType(props.children, TabcardList);
+  const contents = getChildrenOfType(props.children, TabcardContent);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    Root2$1,
+    {
+      "data-slot": "tabcard",
+      className: cn("flex flex-col", className),
+      ...props,
+      children: [
+        triggerList,
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-slot": "tabcard-content-wrapper", children: contents })
+      ]
+    }
+  );
+}
+function TabcardList({
+  className,
+  ...props
+}) {
+  const triggers = getChildrenOfType(props.children, TabcardTrigger).map(
+    (child) => {
+      const typedChild = child;
+      return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { "data-slot": "tabcard-trigger-wrapper", children: child }, typedChild.key);
+    }
+  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    List,
+    {
+      "data-slot": "tabcard-list",
+      className,
+      ...props,
+      children: triggers
+    }
+  );
+}
+function TabcardTrigger({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(CurvedWrapper, { remSize: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Trigger$2,
+    {
+      "data-slot": "tabcard-trigger",
+      className,
+      ...props
+    }
+  ) });
+}
+function TabcardContent({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Content$1,
+    {
+      "data-slot": "tabcard-content",
+      className,
+      ...props
+    }
+  );
+}
+function TabCardFixture() {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Tabcard, { defaultValue: "tab1", className: "min-w-[400px]", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(TabcardList, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardTrigger, { value: "tab1", children: "first" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardTrigger, { value: "tab2", children: "second tab" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardTrigger, { value: "tab3", children: "3rd" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardTrigger, { value: "none", disabled: true, children: "disabled" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardTrigger, { value: "tab4", children: "after 3 comes 4" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardContent, { value: "tab1", children: "Tab1 Content" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardContent, { value: "tab2", children: "Tab2 Content" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardContent, { value: "tab3", children: "Tab3 Content" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TabcardContent, { value: "tab4", children: "Tab4 Content" })
+  ] });
+}
+const fixture3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: TabCardFixture
 }, Symbol.toStringTag, { value: "Module" }));
 function Skeleton({ className, ...props }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -7152,7 +7460,7 @@ function SkeletonFixture() {
     ] })
   ] });
 }
-const fixture3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SkeletonFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -8443,10 +8751,11 @@ var Dialog = (props) => {
   } = props;
   const triggerRef = reactExports.useRef(null);
   const contentRef = reactExports.useRef(null);
-  const [open = false, setOpen] = useControllableState({
+  const [open, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpen,
-    onChange: onOpenChange
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange,
+    caller: DIALOG_NAME
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     DialogProvider,
@@ -9233,7 +9542,7 @@ const items = [
     icon: Settings
   }
 ];
-const fixture4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SidebarFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -9294,7 +9603,7 @@ function SheetFixture() {
     ] })
   ] });
 }
-const fixture5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SheetFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -9314,7 +9623,7 @@ function SeparatorFixture() {
     ] })
   ] });
 }
-const fixture6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SeparatorFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -9364,15 +9673,17 @@ var Select$1 = (props) => {
   const [valueNode, setValueNode] = reactExports.useState(null);
   const [valueNodeHasChildren, setValueNodeHasChildren] = reactExports.useState(false);
   const direction = useDirection(dir);
-  const [open = false, setOpen] = useControllableState({
+  const [open, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpen,
-    onChange: onOpenChange
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange,
+    caller: SELECT_NAME
   });
   const [value, setValue] = useControllableState({
     prop: valueProp,
     defaultProp: defaultValue,
-    onChange: onValueChange
+    onChange: onValueChange,
+    caller: SELECT_NAME
   });
   const triggerPointerDownPosRef = reactExports.useRef(null);
   const isFormControl = trigger ? form || !!trigger.closest("form") : true;
@@ -9416,7 +9727,7 @@ var Select$1 = (props) => {
           }
         ) }),
         isFormControl ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          BubbleSelect,
+          SelectBubbleInput,
           {
             "aria-hidden": true,
             required,
@@ -10380,17 +10691,15 @@ var SelectArrow = reactExports.forwardRef(
   }
 );
 SelectArrow.displayName = ARROW_NAME;
-function shouldShowPlaceholder(value) {
-  return value === "" || value === void 0;
-}
-var BubbleSelect = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { value, ...selectProps } = props;
+var BUBBLE_INPUT_NAME$1 = "SelectBubbleInput";
+var SelectBubbleInput = reactExports.forwardRef(
+  ({ __scopeSelect, value, ...props }, forwardedRef) => {
     const ref = reactExports.useRef(null);
     const composedRefs = useComposedRefs(forwardedRef, ref);
     const prevValue = usePrevious(value);
     reactExports.useEffect(() => {
       const select = ref.current;
+      if (!select) return;
       const selectProto = window.HTMLSelectElement.prototype;
       const descriptor = Object.getOwnPropertyDescriptor(
         selectProto,
@@ -10403,10 +10712,21 @@ var BubbleSelect = reactExports.forwardRef(
         select.dispatchEvent(event);
       }
     }, [prevValue, value]);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(VisuallyHidden, { asChild: true, children: /* @__PURE__ */ jsxRuntimeExports.jsx("select", { ...selectProps, ref: composedRefs, defaultValue: value }) });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.select,
+      {
+        ...props,
+        style: { ...VISUALLY_HIDDEN_STYLES, ...props.style },
+        ref: composedRefs,
+        defaultValue: value
+      }
+    );
   }
 );
-BubbleSelect.displayName = "BubbleSelect";
+SelectBubbleInput.displayName = BUBBLE_INPUT_NAME$1;
+function shouldShowPlaceholder(value) {
+  return value === "" || value === void 0;
+}
 function useTypeaheadSearch(onSearchChange) {
   const handleSearchChange = useCallbackRef$1(onSearchChange);
   const searchRef = reactExports.useRef("");
@@ -10612,7 +10932,7 @@ function SelectFixture() {
     ] }) })
   ] });
 }
-const fixture7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SelectFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10637,10 +10957,11 @@ var Checkbox$1 = reactExports.forwardRef(
     const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node));
     const hasConsumerStoppedPropagationRef = reactExports.useRef(false);
     const isFormControl = button ? form || !!button.closest("form") : true;
-    const [checked = false, setChecked] = useControllableState({
+    const [checked, setChecked] = useControllableState({
       prop: checkedProp,
-      defaultProp: defaultChecked,
-      onChange: onCheckedChange
+      defaultProp: defaultChecked ?? false,
+      onChange: onCheckedChange,
+      caller: CHECKBOX_NAME
     });
     const initialCheckedStateRef = reactExports.useRef(checked);
     reactExports.useEffect(() => {
@@ -10678,7 +10999,7 @@ var Checkbox$1 = reactExports.forwardRef(
         }
       ),
       isFormControl && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        BubbleInput,
+        CheckboxBubbleInput,
         {
           control: button,
           bubbles: !hasConsumerStoppedPropagationRef.current,
@@ -10714,44 +11035,59 @@ var CheckboxIndicator = reactExports.forwardRef(
   }
 );
 CheckboxIndicator.displayName = INDICATOR_NAME;
-var BubbleInput = (props) => {
-  const { control, checked, bubbles = true, defaultChecked, ...inputProps } = props;
-  const ref = reactExports.useRef(null);
-  const prevChecked = usePrevious(checked);
-  const controlSize = useSize(control);
-  reactExports.useEffect(() => {
-    const input = ref.current;
-    const inputProto = window.HTMLInputElement.prototype;
-    const descriptor = Object.getOwnPropertyDescriptor(inputProto, "checked");
-    const setChecked = descriptor.set;
-    if (prevChecked !== checked && setChecked) {
-      const event = new Event("click", { bubbles });
-      input.indeterminate = isIndeterminate(checked);
-      setChecked.call(input, isIndeterminate(checked) ? false : checked);
-      input.dispatchEvent(event);
-    }
-  }, [prevChecked, checked, bubbles]);
-  const defaultCheckedRef = reactExports.useRef(isIndeterminate(checked) ? false : checked);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "input",
-    {
-      type: "checkbox",
-      "aria-hidden": true,
-      defaultChecked: defaultChecked ?? defaultCheckedRef.current,
-      ...inputProps,
-      tabIndex: -1,
-      ref,
-      style: {
-        ...props.style,
-        ...controlSize,
-        position: "absolute",
-        pointerEvents: "none",
-        opacity: 0,
-        margin: 0
+var BUBBLE_INPUT_NAME = "CheckboxBubbleInput";
+var CheckboxBubbleInput = reactExports.forwardRef(
+  ({
+    __scopeCheckbox,
+    control,
+    checked,
+    bubbles = true,
+    defaultChecked,
+    ...props
+  }, forwardedRef) => {
+    const ref = reactExports.useRef(null);
+    const composedRefs = useComposedRefs(ref, forwardedRef);
+    const prevChecked = usePrevious(checked);
+    const controlSize = useSize(control);
+    reactExports.useEffect(() => {
+      const input = ref.current;
+      if (!input) return;
+      const inputProto = window.HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(
+        inputProto,
+        "checked"
+      );
+      const setChecked = descriptor.set;
+      if (prevChecked !== checked && setChecked) {
+        const event = new Event("click", { bubbles });
+        input.indeterminate = isIndeterminate(checked);
+        setChecked.call(input, isIndeterminate(checked) ? false : checked);
+        input.dispatchEvent(event);
       }
-    }
-  );
-};
+    }, [prevChecked, checked, bubbles]);
+    const defaultCheckedRef = reactExports.useRef(isIndeterminate(checked) ? false : checked);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.input,
+      {
+        type: "checkbox",
+        "aria-hidden": true,
+        defaultChecked: defaultChecked ?? defaultCheckedRef.current,
+        ...props,
+        tabIndex: -1,
+        ref: composedRefs,
+        style: {
+          ...props.style,
+          ...controlSize,
+          position: "absolute",
+          pointerEvents: "none",
+          opacity: 0,
+          margin: 0
+        }
+      }
+    );
+  }
+);
+CheckboxBubbleInput.displayName = BUBBLE_INPUT_NAME;
 function isIndeterminate(checked) {
   return checked === "indeterminate";
 }
@@ -10790,14 +11126,14 @@ function LabelFixture() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Label$1, { htmlFor: "terms", children: "Accept terms and conditions" })
   ] }) });
 }
-const fixture8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: LabelFixture
 }, Symbol.toStringTag, { value: "Module" }));
 function InputFixture() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Input, { type: "email", placeholder: "Email" });
 }
-const fixture9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: InputFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10814,110 +11150,10 @@ function CheckboxFixture() {
     )
   ] });
 }
-const fixture10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CheckboxFixture
 }, Symbol.toStringTag, { value: "Module" }));
-function Card({
-  title,
-  headerSecondary,
-  description,
-  footerPrimary,
-  footerSecondary,
-  className,
-  children
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "div",
-    {
-      "data-slot": "card",
-      className: cn("text-card-foreground flex flex-col", className),
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CardHeader,
-          {
-            title,
-            headerSecondary,
-            description
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            "data-slot": "card-content",
-            className: cn(
-              "bg-card rounded-b-4xl border-x border-b px-6",
-              footerPrimary && "rounded-br-none"
-            ),
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-card relative z-[1] py-2", children })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CardFooter,
-          {
-            footerPrimary,
-            footerSecondary
-          }
-        )
-      ]
-    }
-  );
-}
-function CardHeader({
-  title,
-  headerSecondary,
-  description,
-  className
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "div",
-    {
-      "data-slot": "card-header",
-      className: cn("flex min-h-6 flex-col", className),
-      children: [
-        title && /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitlebar, { title, headerSecondary }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            "data-slot": "card-description",
-            className: cn(
-              "bg-card text-muted-foreground rounded-tr-4xl border-x border-t px-6 pb-4 text-sm",
-              !title && "rounded-tl-4xl"
-            ),
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-card relative z-[1] size-full pt-3", children: description })
-          }
-        )
-      ]
-    }
-  );
-}
-function CardTitlebar({ title, headerSecondary, className }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { "data-slot": "card-titlebar", className: cn("card-titlebar", className), children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("card-titlebar-title flex-auto"), children: title }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: cn("card-titlebar-secondary"), children: headerSecondary })
-  ] });
-}
-function CardFooter({
-  footerPrimary,
-  footerSecondary,
-  className
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: footerPrimary && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "div",
-    {
-      "data-slot": "card-footer",
-      className: cn(
-        "card-footer",
-        !footerPrimary && "bg-card rounded-b-4xl border border-t-0",
-        className
-      ),
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-footer-secondary", children: footerSecondary }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-footer-primary", children: footerPrimary })
-      ]
-    }
-  ) });
-}
 function CardFixture() {
   const [title] = useFixtureInput("Title", "create_project");
   const [headerSecondary] = useFixtureInput("Header secondary", "");
@@ -10964,14 +11200,14 @@ function CardFixture() {
     }
   );
 }
-const fixture11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CardFixture
 }, Symbol.toStringTag, { value: "Module" }));
 function ButtonFixture() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { children: "Hello, World!!" });
 }
-const fixture12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const fixture13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ButtonFixture
 }, Symbol.toStringTag, { value: "Module" }));
@@ -10983,16 +11219,17 @@ const fixtures = {
   "src/__fixtures__/Tooltip.fixture.tsx": { module: fixture0 },
   "src/__fixtures__/Textarea.fixture.tsx": { module: fixture1 },
   "src/__fixtures__/Tabs.fixture.tsx": { module: fixture2 },
-  "src/__fixtures__/Skeleton.fixture.tsx": { module: fixture3 },
-  "src/__fixtures__/Sidebar.fixture.tsx": { module: fixture4 },
-  "src/__fixtures__/Sheet.fixture.tsx": { module: fixture5 },
-  "src/__fixtures__/Separator.fixture.tsx": { module: fixture6 },
-  "src/__fixtures__/Select.fixture.tsx": { module: fixture7 },
-  "src/__fixtures__/Label.fixture.tsx": { module: fixture8 },
-  "src/__fixtures__/Input.fixture.tsx": { module: fixture9 },
-  "src/__fixtures__/Checkbox.fixture.tsx": { module: fixture10 },
-  "src/__fixtures__/Card.fixture.tsx": { module: fixture11 },
-  "src/__fixtures__/Button.fixture.tsx": { module: fixture12 }
+  "src/__fixtures__/Tabcard.fixture.tsx": { module: fixture3 },
+  "src/__fixtures__/Skeleton.fixture.tsx": { module: fixture4 },
+  "src/__fixtures__/Sidebar.fixture.tsx": { module: fixture5 },
+  "src/__fixtures__/Sheet.fixture.tsx": { module: fixture6 },
+  "src/__fixtures__/Separator.fixture.tsx": { module: fixture7 },
+  "src/__fixtures__/Select.fixture.tsx": { module: fixture8 },
+  "src/__fixtures__/Label.fixture.tsx": { module: fixture9 },
+  "src/__fixtures__/Input.fixture.tsx": { module: fixture10 },
+  "src/__fixtures__/Checkbox.fixture.tsx": { module: fixture11 },
+  "src/__fixtures__/Card.fixture.tsx": { module: fixture12 },
+  "src/__fixtures__/Button.fixture.tsx": { module: fixture13 }
 };
 const decorators = {};
 const moduleWrappers = {

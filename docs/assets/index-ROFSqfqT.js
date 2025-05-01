@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./_virtual_cosmos-imports-CVnvOWFR.js","./_virtual_cosmos-imports-RasYxPLg.css"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./_virtual_cosmos-imports-D640rvJO.js","./_virtual_cosmos-imports-D8gPyNFS.css"])))=>i.map(i=>d[i]);
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
@@ -66,12 +66,22 @@ const seen = {};
 const __vitePreload = function preload(baseModule, deps, importerUrl) {
   let promise = Promise.resolve();
   if (deps && deps.length > 0) {
+    let allSettled2 = function(promises) {
+      return Promise.all(
+        promises.map(
+          (p) => Promise.resolve(p).then(
+            (value) => ({ status: "fulfilled", value }),
+            (reason) => ({ status: "rejected", reason })
+          )
+        )
+      );
+    };
     const links = document.getElementsByTagName("link");
     const cspNonceMeta = document.querySelector(
       "meta[property=csp-nonce]"
     );
     const cspNonce = (cspNonceMeta == null ? void 0 : cspNonceMeta.nonce) || (cspNonceMeta == null ? void 0 : cspNonceMeta.getAttribute("nonce"));
-    promise = Promise.allSettled(
+    promise = allSettled2(
       deps.map((dep) => {
         dep = assetsURL(dep, importerUrl);
         if (dep in seen) return;
@@ -584,10 +594,10 @@ function requireReact() {
   return react.exports;
 }
 var reactExports = requireReact();
-const React = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const React$1 = /* @__PURE__ */ _mergeNamespaces({
+const React2 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const React = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,
-  default: React
+  default: React2
 }, [reactExports]);
 var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
 var freeSelf = typeof self == "object" && self && self.Object === Object && self;
@@ -2183,8 +2193,8 @@ function arePropsEqual(object1, object2) {
   return Object.keys(object1).every((key) => isEqualWith(object1[key], object2[key], (value1, value2) => typeof value1 === "function" && typeof value2 === "function" ? value1 === value2 || value1.toString() === value2.toString() : isEqual(value1, value2)));
 }
 function DelayRender({ children, delay }) {
-  const [render, setRender] = React.useState(false);
-  React.useEffect(() => {
+  const [render, setRender] = React2.useState(false);
+  React2.useEffect(() => {
     const timeoutId = setTimeout(() => setRender(true), delay);
     return () => clearTimeout(timeoutId);
   }, [delay]);
@@ -2210,7 +2220,7 @@ function isInsideWindowIframe() {
     return true;
   }
 }
-const FixtureContext = React.createContext({
+const FixtureContext = React2.createContext({
   fixtureState: {},
   setFixtureState: () => {
   }
@@ -2315,7 +2325,7 @@ function isRefSupported(elementType) {
   // Warning: This will return false is the component is extending a
   // different copy of React than the one used by Cosmos. This is relevant
   // when running Cosmos from an external location instead of node_modules.
-  (prototype instanceof React.Component || // React.createClass
+  (prototype instanceof React2.Component || // React.createClass
   prototype.getInitialState !== void 0) && true;
 }
 function decorateFixtureRefs(fixture, spyRef, cachedRefHandlers) {
@@ -2511,8 +2521,8 @@ function doesFixtureStateMatchClassState(fsClassState, state) {
   return isEqual(state, extendWithValues(state, fsClassState.values));
 }
 function useClassStateCapture(fixture, decoratorId) {
-  const elRefs = React.useRef({});
-  React.useEffect(() => {
+  const elRefs = React2.useRef({});
+  React2.useEffect(() => {
     return () => {
       elRefs.current = {};
     };
@@ -2521,7 +2531,7 @@ function useClassStateCapture(fixture, decoratorId) {
   return useFixtureClassState(fixture, decoratorId, elRefs);
 }
 function useFixtureProps(fixture, propsFs, decoratorId) {
-  const propCache = React.useMemo(
+  const propCache = React2.useMemo(
     () => ({}),
     // React.useMemo is used as a cache invalidated by decoratorId
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2618,7 +2628,7 @@ function FixtureCapture({ children, decoratorId }) {
   return fixture;
 }
 function createFixtureNode(fixture) {
-  return isNodeFixture(fixture) ? fixture : React.createElement(FixtureElement, { Component: fixture });
+  return isNodeFixture(fixture) ? fixture : React2.createElement(FixtureElement, { Component: fixture });
 }
 function isNodeFixture(fixture) {
   return fixture === void 0 || fixture === null || typeof fixture === "string" || typeof fixture === "number" || typeof fixture === "boolean" || Array.isArray(fixture) || // If you're curious what isElement checks:
@@ -2626,11 +2636,11 @@ function isNodeFixture(fixture) {
   reactIsExports.isElement(fixture);
 }
 function FixtureElement({ Component }) {
-  return React.createElement(Component, null);
+  return React2.createElement(Component, null);
 }
 FixtureElement.cosmosCapture = false;
 function decorateFixture(fixtureNode, fixtureOptions, decorators) {
-  return React.createElement(React.Fragment, null, [...decorators].reverse().reduce((prevElement, Decorator) => React.createElement(Decorator, { options: fixtureOptions }, prevElement), fixtureNode));
+  return React2.createElement(React2.Fragment, null, [...decorators].reverse().reduce((prevElement, Decorator) => React2.createElement(Decorator, { options: fixtureOptions }, prevElement), fixtureNode));
 }
 function DecoratedFixture({ fixture, fixtureOptions, userDecoratorModules, globalDecorators: globalDecorators2 = [] }) {
   return reactExports.useMemo(() => {
@@ -2638,10 +2648,10 @@ function DecoratedFixture({ fixture, fixtureOptions, userDecoratorModules, globa
       ...globalDecorators2,
       ...userDecoratorModules.map((m) => m.default).flat()
     ];
-    return decorateFixture(React.createElement(FixtureCapture, { decoratorId: "root" }, createFixtureNode(fixture)), fixtureOptions, decorators);
+    return decorateFixture(React2.createElement(FixtureCapture, { decoratorId: "root" }, createFixtureNode(fixture)), fixtureOptions, decorators);
   }, [fixture, fixtureOptions, globalDecorators2, userDecoratorModules]);
 }
-const RendererContext = React.createContext({
+const RendererContext = React2.createContext({
   rendererId: "default-renderer-id",
   rendererConnect: {
     postMessage: () => {
@@ -2662,17 +2672,17 @@ const RendererContext = React.createContext({
   }
 });
 function FixtureProvider(props) {
-  const [state, setState] = React.useState({
+  const [state, setState] = React2.useState({
     fixtureState: props.initialFixtureState || {},
     syncedFixtureState: {}
   });
-  const { rendererId, rendererConnect, setLazyItems } = React.useContext(RendererContext);
-  React.useEffect(() => {
+  const { rendererId, rendererConnect, setLazyItems } = React2.useContext(RendererContext);
+  React2.useEffect(() => {
     if (props.lazy) {
       setLazyItems(props.fixtureItem.type === "multi" ? { [props.fixtureId.path]: props.fixtureItem } : noLazyItem);
     }
   }, [props.fixtureId.path, props.fixtureItem, props.lazy, setLazyItems]);
-  React.useEffect(() => {
+  React2.useEffect(() => {
     rendererConnect.postMessage({
       type: "fixtureLoaded",
       payload: {
@@ -2682,7 +2692,7 @@ function FixtureProvider(props) {
       }
     });
   }, [props.fixtureItem, props.fixtureOptions, rendererConnect, rendererId]);
-  React.useEffect(() => {
+  React2.useEffect(() => {
     if (!isEqual(state.fixtureState, state.syncedFixtureState)) {
       rendererConnect.postMessage({
         type: "fixtureStateChange",
@@ -2704,7 +2714,7 @@ function FixtureProvider(props) {
     state.fixtureState,
     state.syncedFixtureState
   ]);
-  React.useEffect(() => rendererConnect.onMessage((msg) => {
+  React2.useEffect(() => rendererConnect.onMessage((msg) => {
     if (msg.type === "setFixtureState" && msg.payload.rendererId === rendererId) {
       const { fixtureId, fixtureState } = msg.payload;
       setState((prevState) => (
@@ -2713,29 +2723,29 @@ function FixtureProvider(props) {
       ));
     }
   }), [props.fixtureId, rendererConnect, rendererId]);
-  const setFixtureState = React.useCallback((stateUpdate) => {
+  const setFixtureState = React2.useCallback((stateUpdate) => {
     setState((prevState) => ({
       ...prevState,
       fixtureState: stateUpdate(prevState.fixtureState)
     }));
   }, [setState]);
-  const contextValue = React.useMemo(() => ({ fixtureState: state.fixtureState, setFixtureState }), [setFixtureState, state.fixtureState]);
-  return React.createElement(FixtureContext.Provider, { value: contextValue }, props.children);
+  const contextValue = React2.useMemo(() => ({ fixtureState: state.fixtureState, setFixtureState }), [setFixtureState, state.fixtureState]);
+  return React2.createElement(FixtureContext.Provider, { value: contextValue }, props.children);
 }
 const noLazyItem = {};
 function FixtureModule({ fixtureModule, decoratorModules, globalDecorators: globalDecorators2, fixtureId, initialFixtureState, renderKey, lazy, renderMessage: renderMessage2 }) {
-  const fixtureItem = React.useMemo(() => getFixtureItemFromExport(fixtureModule.default), [fixtureModule.default]);
-  const fixtureKey = React.useMemo(() => `${stringifyFixtureId(fixtureId)}-${renderKey}`, [fixtureId, renderKey]);
+  const fixtureItem = React2.useMemo(() => getFixtureItemFromExport(fixtureModule.default), [fixtureModule.default]);
+  const fixtureKey = React2.useMemo(() => `${stringifyFixtureId(fixtureId)}-${renderKey}`, [fixtureId, renderKey]);
   const fixture = getFixtureFromExport(fixtureModule.default, fixtureId.name);
   const { options = {} } = fixtureModule;
-  const serializableOptions = React.useMemo(() => pickSerializableValues(options), [options]);
+  const serializableOptions = React2.useMemo(() => pickSerializableValues(options), [options]);
   if (typeof fixture === "undefined") {
     return renderMessage2(`Invalid fixture name: ${fixtureId.name}`);
   }
-  return React.createElement(
+  return React2.createElement(
     FixtureProvider,
     { key: fixtureKey, fixtureId, initialFixtureState, fixtureItem, fixtureOptions: serializableOptions, lazy },
-    React.createElement(DecoratedFixture, { fixture, fixtureOptions: options, userDecoratorModules: decoratorModules, globalDecorators: globalDecorators2 })
+    React2.createElement(DecoratedFixture, { fixture, fixtureOptions: options, userDecoratorModules: decoratorModules, globalDecorators: globalDecorators2 })
   );
 }
 async function importLazyFixtureModules(fixtureWrapper, decoratorWrappers) {
@@ -2749,8 +2759,8 @@ function LazyModuleLoader({ fixtureWrapper, decorators, fixturePath, renderModul
   return modules && renderModules(modules);
 }
 function useLazyFixtureModules(fixturePath, fixtureWrapper, decoratorWrappers) {
-  const [state, setState] = React.useState(null);
-  React.useEffect(() => {
+  const [state, setState] = React2.useState(null);
+  React2.useEffect(() => {
     let canceled = false;
     (async () => {
       const modules = await importLazyFixtureModules(fixtureWrapper, getSortedDecoratorsForFixturePath(fixturePath, decoratorWrappers));
@@ -2765,16 +2775,16 @@ function useLazyFixtureModules(fixturePath, fixtureWrapper, decoratorWrappers) {
   return state && state.fixturePath === fixturePath ? state.modules : null;
 }
 function StaticModuleLoader({ fixtureWrapper, decorators, fixturePath, renderModules }) {
-  return renderModules(React.useMemo(() => ({
+  return renderModules(React2.useMemo(() => ({
     fixtureModule: fixtureWrapper.module,
     decoratorModules: getSortedDecoratorsForFixturePath(fixturePath, decorators).map((d) => d.module)
   }), [decorators, fixturePath, fixtureWrapper.module]));
 }
 function RendererSync({ children, fixtures }) {
-  const { rendererId, rendererConnect, locked, selectedFixture, selectFixture, unselectFixture, reloadRenderer, lazyItems } = React.useContext(RendererContext);
+  const { rendererId, rendererConnect, locked, selectedFixture, selectFixture, unselectFixture, reloadRenderer, lazyItems } = React2.useContext(RendererContext);
   const selectedFixtureId = selectedFixture == null ? void 0 : selectedFixture.fixtureId;
-  const readyRef = React.useRef(false);
-  React.useEffect(() => {
+  const readyRef = React2.useRef(false);
+  React2.useEffect(() => {
     if (!readyRef.current) {
       rendererConnect.postMessage({
         type: "rendererReady",
@@ -2786,7 +2796,7 @@ function RendererSync({ children, fixtures }) {
       readyRef.current = true;
     }
   }, [rendererConnect, rendererId, selectedFixtureId]);
-  React.useEffect(() => {
+  React2.useEffect(() => {
     rendererConnect.postMessage({
       type: "fixtureListUpdate",
       payload: {
@@ -2795,7 +2805,7 @@ function RendererSync({ children, fixtures }) {
       }
     });
   }, [fixtures, lazyItems, rendererConnect, rendererId]);
-  React.useEffect(() => rendererConnect.onMessage((msg) => {
+  React2.useEffect(() => rendererConnect.onMessage((msg) => {
     if (msg.type === "pingRenderers") {
       rendererConnect.postMessage({
         type: "rendererReady",
@@ -2815,7 +2825,7 @@ function RendererSync({ children, fixtures }) {
       reloadRenderer();
     }
   }), [fixtures, reloadRenderer, rendererConnect, rendererId, selectedFixtureId]);
-  React.useEffect(() => rendererConnect.onMessage((msg) => {
+  React2.useEffect(() => rendererConnect.onMessage((msg) => {
     if (!locked && msg.type === "selectFixture" && msg.payload.rendererId === rendererId) {
       const { fixtureId, fixtureState } = msg.payload;
       selectFixture(fixtureId, fixtureState);
@@ -2826,10 +2836,10 @@ function RendererSync({ children, fixtures }) {
   return children;
 }
 function FixtureLoaderConnect({ moduleWrappers, selectedFixture, renderMessage: renderMessage2, renderFixture }) {
-  const fixtures = React.useMemo(() => getFixtureListFromWrappers(moduleWrappers), [moduleWrappers]);
+  const fixtures = React2.useMemo(() => getFixtureListFromWrappers(moduleWrappers), [moduleWrappers]);
   function renderInner() {
     if (!selectedFixture) {
-      return React.createElement(DelayRender, { delay: 500 }, renderMessage2("No fixture selected."));
+      return React2.createElement(DelayRender, { delay: 500 }, renderMessage2("No fixture selected."));
     }
     const { fixtureId } = selectedFixture;
     if (!fixtures[fixtureId.path]) {
@@ -2837,24 +2847,24 @@ function FixtureLoaderConnect({ moduleWrappers, selectedFixture, renderMessage: 
     }
     return renderFixture(selectedFixture);
   }
-  return React.createElement(RendererSync, { fixtures }, renderInner());
+  return React2.createElement(RendererSync, { fixtures }, renderInner());
 }
 function defaultRenderMessage(msg) {
   return msg;
 }
 function ClientFixtureLoader({ moduleWrappers, globalDecorators: globalDecorators2, renderMessage: renderMessage2 = defaultRenderMessage }) {
-  const { selectedFixture } = React.useContext(RendererContext);
-  return React.createElement(FixtureLoaderConnect, { moduleWrappers, selectedFixture, renderMessage: renderMessage2, renderFixture: (selected) => {
+  const { selectedFixture } = React2.useContext(RendererContext);
+  return React2.createElement(FixtureLoaderConnect, { moduleWrappers, selectedFixture, renderMessage: renderMessage2, renderFixture: (selected) => {
     function renderModules(modules) {
-      return React.createElement(FixtureModule, { ...modules, ...selected, globalDecorators: globalDecorators2, lazy: moduleWrappers.lazy, renderMessage: renderMessage2 });
+      return React2.createElement(FixtureModule, { ...modules, ...selected, globalDecorators: globalDecorators2, lazy: moduleWrappers.lazy, renderMessage: renderMessage2 });
     }
     const { fixtureId } = selected;
-    return moduleWrappers.lazy ? React.createElement(LazyModuleLoader, { fixtureWrapper: moduleWrappers.fixtures[fixtureId.path], decorators: moduleWrappers.decorators, fixturePath: fixtureId.path, renderModules }) : React.createElement(StaticModuleLoader, { fixtureWrapper: moduleWrappers.fixtures[fixtureId.path], decorators: moduleWrappers.decorators, fixturePath: fixtureId.path, renderModules });
+    return moduleWrappers.lazy ? React2.createElement(LazyModuleLoader, { fixtureWrapper: moduleWrappers.fixtures[fixtureId.path], decorators: moduleWrappers.decorators, fixturePath: fixtureId.path, renderModules }) : React2.createElement(StaticModuleLoader, { fixtureWrapper: moduleWrappers.fixtures[fixtureId.path], decorators: moduleWrappers.decorators, fixturePath: fixtureId.path, renderModules });
   } });
 }
 function RendererProvider(props) {
-  const [lazyItems, setLazyItems] = React.useState({});
-  const value = React.useMemo(() => {
+  const [lazyItems, setLazyItems] = React2.useState({});
+  const value = React2.useMemo(() => {
     return {
       rendererId: props.rendererId,
       rendererConnect: props.rendererConnect,
@@ -2876,29 +2886,29 @@ function RendererProvider(props) {
     props.selectedFixture,
     props.unselectFixture
   ]);
-  return React.createElement(RendererContext.Provider, { value }, props.children);
+  return React2.createElement(RendererContext.Provider, { value }, props.children);
 }
 function StatefulRendererProvider({ children, selectedFixtureId, ...otherProps }) {
-  const [selectedFixture, setSelectedFixture] = React.useState(() => selectedFixtureId && {
+  const [selectedFixture, setSelectedFixture] = React2.useState(() => selectedFixtureId && {
     fixtureId: selectedFixtureId,
     initialFixtureState: {},
     renderKey: 0
   });
-  const selectFixture = React.useCallback((fixtureId, initialFixtureState) => {
+  const selectFixture = React2.useCallback((fixtureId, initialFixtureState) => {
     setSelectedFixture((prevState) => ({
       fixtureId,
       initialFixtureState,
       renderKey: ((prevState == null ? void 0 : prevState.renderKey) ?? 0) + 1
     }));
   }, []);
-  const unselectFixture = React.useCallback(() => {
+  const unselectFixture = React2.useCallback(() => {
     setSelectedFixture(null);
   }, []);
-  return React.createElement(RendererProvider, { ...otherProps, selectedFixture, selectFixture, unselectFixture }, children);
+  return React2.createElement(RendererProvider, { ...otherProps, selectedFixture, selectFixture, unselectFixture }, children);
 }
 function GlobalErrorHandler() {
-  const { rendererId, rendererConnect } = React.useContext(RendererContext);
-  React.useEffect(() => {
+  const { rendererId, rendererConnect } = React2.useContext(RendererContext);
+  React2.useEffect(() => {
     function handleGlobalError() {
       rendererConnect.postMessage({
         type: "rendererError",
@@ -2984,7 +2994,7 @@ function createWebSocketsUrl(playgroundUrl) {
   return playgroundUrl.replace(/^https:/, "wss:").replace(/^http:/, "ws:");
 }
 function useDomRendererConnect(playgroundUrl) {
-  return React.useMemo(() => createDomRendererConnect(playgroundUrl), [playgroundUrl]);
+  return React2.useMemo(() => createDomRendererConnect(playgroundUrl), [playgroundUrl]);
 }
 function createDomRendererConnect(playgroundUrl) {
   if (typeof window === "undefined") {
@@ -2994,7 +3004,7 @@ function createDomRendererConnect(playgroundUrl) {
   }
 }
 function useDomRendererId() {
-  return React.useMemo(() => getDomRendererId(), []);
+  return React2.useMemo(() => getDomRendererId(), []);
 }
 function getDomRendererId() {
   if (typeof sessionStorage === "undefined") {
@@ -3010,15 +3020,15 @@ function getDomRendererId() {
 function DomRendererProvider({ children, rendererConfig }) {
   const rendererId = useDomRendererId();
   const rendererConnect = useDomRendererConnect(rendererConfig.playgroundUrl);
-  const { locked = false, fixtureId = null } = React.useMemo(() => parseRendererQueryString(location.search), []);
-  return React.createElement(
+  const { locked = false, fixtureId = null } = React2.useMemo(() => parseRendererQueryString(location.search), []);
+  return React2.createElement(
     StatefulRendererProvider,
     { rendererId, rendererConnect, locked, selectedFixtureId: fixtureId, reloadRenderer: reloadDomRenderer },
     children,
-    typeof window !== "undefined" && React.createElement(GlobalErrorHandler, null)
+    typeof window !== "undefined" && React2.createElement(GlobalErrorHandler, null)
   );
 }
-class ErrorCatch extends React.Component {
+class ErrorCatch extends React2.Component {
   constructor() {
     super(...arguments);
     __publicField(this, "state", {
@@ -3045,12 +3055,12 @@ ${info.componentStack}`
     return this.state.error ? this.renderError(this.state.error) : this.props.children;
   }
   renderError(error) {
-    return React.createElement(
-      React.Fragment,
+    return React2.createElement(
+      React2.Fragment,
       null,
-      React.createElement("h1", null, "Ouch, something wrong!"),
-      React.createElement("pre", null, error),
-      React.createElement("p", null, "Check console for more info.")
+      React2.createElement("h1", null, "Ouch, something wrong!"),
+      React2.createElement("pre", null, error),
+      React2.createElement("p", null, "Check console for more info.")
     );
   }
 }
@@ -3063,10 +3073,10 @@ function fixtureStateChanged(fS1, fS2) {
   return !isEqual(fS1, fS2);
 }
 function DomFixtureLoader({ rendererConfig, moduleWrappers }) {
-  return React.createElement(
+  return React2.createElement(
     DomRendererProvider,
     { rendererConfig },
-    React.createElement(ClientFixtureLoader, { moduleWrappers, globalDecorators, renderMessage })
+    React2.createElement(ClientFixtureLoader, { moduleWrappers, globalDecorators, renderMessage })
   );
 }
 const globalDecorators = [ErrorCatch];
@@ -3083,7 +3093,7 @@ const containerStyle = {
   fontSize: 14
 };
 function renderMessage(msg) {
-  return React.createElement("div", { style: containerStyle }, msg);
+  return React2.createElement("div", { style: containerStyle }, msg);
 }
 var client = { exports: {} };
 var reactDomClient_production = {};
@@ -3377,7 +3387,7 @@ var hasRequiredReactDom_production;
 function requireReactDom_production() {
   if (hasRequiredReactDom_production) return reactDom_production;
   hasRequiredReactDom_production = 1;
-  var React2 = requireReact();
+  var React3 = requireReact();
   function formatProdErrorMessage(code) {
     var url = "https://react.dev/errors/" + code;
     if (1 < arguments.length) {
@@ -3416,7 +3426,7 @@ function requireReactDom_production() {
       implementation
     };
   }
-  var ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+  var ReactSharedInternals = React3.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
   function getCrossOriginStringAs(as, input) {
     if ("font" === as) return "";
     if ("string" === typeof input)
@@ -3553,7 +3563,7 @@ var hasRequiredReactDomClient_production;
 function requireReactDomClient_production() {
   if (hasRequiredReactDomClient_production) return reactDomClient_production;
   hasRequiredReactDomClient_production = 1;
-  var Scheduler = requireScheduler(), React2 = requireReact(), ReactDOM = requireReactDom();
+  var Scheduler = requireScheduler(), React3 = requireReact(), ReactDOM = requireReactDom();
   function formatProdErrorMessage(code) {
     var url = "https://react.dev/errors/" + code;
     if (1 < arguments.length) {
@@ -3721,7 +3731,7 @@ function requireReactDomClient_production() {
       }
     return null;
   }
-  var isArrayImpl = Array.isArray, ReactSharedInternals = React2.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, sharedNotPendingObject = {
+  var isArrayImpl = Array.isArray, ReactSharedInternals = React3.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, sharedNotPendingObject = {
     pending: false,
     data: null,
     method: null,
@@ -14507,7 +14517,7 @@ function requireReactDomClient_production() {
       0 === i && attemptExplicitHydrationTarget(target);
     }
   };
-  var isomorphicReactPackageVersion$jscomp$inline_1785 = React2.version;
+  var isomorphicReactPackageVersion$jscomp$inline_1785 = React3.version;
   if ("19.1.0" !== isomorphicReactPackageVersion$jscomp$inline_1785)
     throw Error(
       formatProdErrorMessage(
@@ -14652,17 +14662,17 @@ function mountDomRenderer({ rendererConfig, moduleWrappers }) {
     const reactRoot = clientExports.createRoot(domContainer);
     cachedRoot = { domContainer, reactRoot };
   }
-  cachedRoot.reactRoot.render(React.createElement(DomFixtureLoader, { rendererConfig, moduleWrappers }));
+  cachedRoot.reactRoot.render(React2.createElement(DomFixtureLoader, { rendererConfig, moduleWrappers }));
 }
 mount();
 async function mount() {
-  const args = await __vitePreload(() => import("./_virtual_cosmos-imports-CVnvOWFR.js"), true ? __vite__mapDeps([0,1]) : void 0, import.meta.url);
+  const args = await __vitePreload(() => import("./_virtual_cosmos-imports-D640rvJO.js"), true ? __vite__mapDeps([0,1]) : void 0, import.meta.url);
   mountDomRenderer(args);
 }
 export {
-  React as R,
+  React2 as R,
   requireReactDom as a,
-  React$1 as b,
+  React as b,
   createValue as c,
   extendWithValue as e,
   getDefaultExportFromCjs as g,
