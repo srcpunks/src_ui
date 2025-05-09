@@ -34,10 +34,14 @@ export default defineConfig(({ mode }) => {
           formats: ['es'],
         },
         rollupOptions: {
-          external: ['react', 'react-dom', 'react/jsx-runtime'],
+          external: ['react', 'react-dom', 'react/jsx-runtime', 'tailwindcss'],
           // https://rollupjs.org/configuration-options/#input
           input: Object.fromEntries(
-            globSync(['src/components/**/*.tsx', 'src/main.ts']).map((file) => {
+            globSync([
+              'src/components/**/*.tsx',
+              'src/style.css',
+              'src/main.ts',
+            ]).map((file) => {
               // This remove `src/` as well as the file extension from each
               // file, so e.g. src/nested/foo.js becomes nested/foo
               const entryName = path.relative(
@@ -57,6 +61,7 @@ export default defineConfig(({ mode }) => {
               react: 'React',
               'react-dom': 'React-dom',
               'react/jsx-runtime': 'react/jsx-runtime',
+              tailwindcss: 'tailwindcss',
             },
           },
         },
