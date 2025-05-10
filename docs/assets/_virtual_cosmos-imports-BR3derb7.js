@@ -1,4 +1,4 @@
-import { u as useFixtureState, e as extendWithValue, R as React2, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React } from "./index-ROFSqfqT.js";
+import { u as useFixtureState, e as extendWithValue, R as React2, c as createValue, i as isEqual, r as reactExports, a as requireReactDom, g as getDefaultExportFromCjs, b as React } from "./index-BFqU0qNG.js";
 function useCurrentInputValue(inputName, defaultValue) {
   const [fixtureState] = useFixtureState("inputs");
   const inputFs = fixtureState && fixtureState[inputName];
