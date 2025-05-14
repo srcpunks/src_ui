@@ -60,7 +60,7 @@
 }
 
 [data-slot='tabcard-content-wrapper'] {
-  @apply border-accent flex-auto rounded-4xl border outline-none;
+  @apply border-accent flex-auto rounded-4xl border outline-none overflow-hidden;
 
   &:has(:first-child[data-state='active']) {
     &,
